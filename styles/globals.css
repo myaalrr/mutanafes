@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #F5F5F5;
+  --foreground: #171717;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Urbanist-Light', Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.arabic-text-Light {
+  font-family: 'Noto Sans Arabic Light', Tahoma, Arial, sans-serif;
+}
+
+.arabic-text-semiBold {
+  font-family: 'Noto Sans Arabic SemiBold', Tahoma, Arial, sans-serif;
+}
+
+.custom-arabic-light {
+  font-family: 'Noto Sans Arabic Light', Tahoma, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 1.5rem;
+}
+
+.custom-arabic-semibold {
+  font-family: 'Noto Sans Arabic SemiBold', Tahoma, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+@font-face {
+  font-family: 'Urbanist-Light';
+  src: url('/Urbanist-Light.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Noto Sans Arabic Light';
+  src: url('/NotoSansArabic_Condensed-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Noto Sans Arabic SemiBold';
+  src: url('/NotoSansArabic_SemiCondensed-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+
+
+
+
+
+
+
+
