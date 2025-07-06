@@ -181,12 +181,14 @@ export default function Services() {
 
           .service-label {
             font-size: 13px;
+             max-width: 130px;
+
           }
 
           .service-description {
             font-size: 12px;
             line-height: 1.8;
-            max-width: 150px;
+            max-width: 140px;
           }
         }
       `}</style>
