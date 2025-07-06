@@ -76,6 +76,8 @@ export default function About() {
         @media (max-width: 450px) {
           .about-section {
             height: auto;
+          margin-bottom: -50px;
+
           }
 
           .about-heading {
@@ -89,8 +91,9 @@ export default function About() {
           }
 
           .about-text {
-            font-size: 15px;
-            line-height: 1.6;
+            font-size: 12px;
+            line-height: 1.8;
+
           }
         }
       `}</style>
