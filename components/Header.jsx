@@ -1,6 +1,4 @@
 import Image from 'next/image';
-import { LuPhone } from "react-icons/lu";
-import { MdOutlineMailOutline } from "react-icons/md";
 
 export default function Header() {
   return (
@@ -55,45 +53,77 @@ export default function Header() {
             </div>
           </div>
 
-          {/* معلومات التواصل */}
+          {/* روابط */}
           <div
             className="contact-info"
             style={{
               display: 'flex',
-              gap: '30px',
+              gap: '20px',
               alignItems: 'center',
-              direction: 'ltr',
-              textAlign: 'left',
               justifyContent: 'flex-end',
-              fontSize: '15px',
-              transition: 'gap 0.3s ease, font-size 0.3s ease',
+              direction: 'rtl',
+              textAlign: 'right',
+              fontSize: '15 px',
             }}
           >
-            <div className="contact-item" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#A1A1A1' }}>
-              <LuPhone className="icon" color="#000" />
-              <a href="tel:+966570779695" style={{ color: '#111', textDecoration: 'none' }}>
-                +966 570 779 695
-              </a>
-            </div>
+            <a
+              href="/login"
+              className="login-btn"
+              style={{
+                fontFamily: "Noto Sans Arabic Light",
+              }}
+            >
+              تسجيل الدخول
+            </a>
 
-            <div className="contact-item" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#A1A1A1' }}>
-              <MdOutlineMailOutline className="icon" color="#000" />
-              <a href="mailto:Mutanafes.hr@gmail.com" style={{ color: '#111', textDecoration: 'none' }}>
-                Mutanafes.hr@gmail.com
-              </a>
-            </div>
+            <a
+              href="/signup"
+              className="signup-btn"
+              style={{
+                fontFamily: "Noto Sans Arabic Light",
+              }}
+            >
+              إنشاء حساب
+            </a>
           </div>
         </div>
       </header>
 
       <style jsx>{`
-        .icon {
-          font-size: 20px;
+        .login-btn {
+          background-color: #000;
+          color: #fff;
+          padding: 6px 25px;
+          border-radius: 30px;
+          text-decoration: none;
+          transition: background-color 0.3s ease;
+          font-size: 15px;
+          display: inline-block;
+        }
+
+        .login-btn:hover {
+          background-color: #333;
+        }
+
+        .signup-btn {
+          border: 2px solid #000;
+          color: #000;
+          padding: 4px 25px;
+          border-radius: 30px;
+          text-decoration: none;
+          transition: background-color 0.3s ease, color 0.3s ease;
+          font-size: 15px;
+          display: inline-block;
+        }
+
+        .signup-btn:hover {
+          background-color: #000;
+          color: #fff;
         }
 
         @media (max-width: 480px) {
           header.header-main {
-            height: 50px !important;
+            height: 60px !important;
           }
 
           div.header-container {
@@ -101,20 +131,21 @@ export default function Header() {
           }
 
           .logo-wrapper {
-            width: 25px !important;
+            width: 30px !important;
           }
 
           .logo-text-wrapper {
-            width: 70px !important;
+            width: 80px !important;
           }
 
           .contact-info {
             gap: 10px !important;
-            font-size: 10px !important;
           }
 
-          .icon {
+          .login-btn,
+          .signup-btn {
             font-size: 12px !important;
+            padding: 0px 12px !important;
           }
         }
       `}</style>

@@ -7,20 +7,20 @@ export default function About() {
         <p className="about-sub">About Mutanafes</p>
 
         <p className="about-text">
-          <span style={{ color: '#E46A00', fontWeight: 'bold' }}>متنافس </span>
+          <span style={{ color: '#E46A00',fontFamily: "Noto Sans Arabic SemiBold", }}>متنافس </span>
           هي منصة تأهيل مهني متكاملة تهدف إلى تمكين الطلاب والخريجين للاستعداد لسوق العمل عبر مجموعة من الخدمات المتكاملة التي تهدف إلى تعزيز مهاراتهم وتسريع وصولهم إلى الفرص الوظيفية.
           <br /><br /> تأسست متنافس عام 2024 في حاضنة الأعمال بجامعة المجمعة، وتسعى إلى أن تكون المنصة الرائدة في تأهيل الكوارد الشابة وربطها بفرص العمل المناسبة.
           <br /><br /><br />
 
-          <span style={{ color: '#000000', fontWeight: 'bold' }}>رؤيتنا :</span><br />
+          <span style={{ color: '#000000', fontFamily: "Noto Sans Arabic SemiBold" }}>رؤيتنا :</span><br />
           أن نكون الجسر الذي يربط الخريجين بسوق العمل عبر تدريب عملي متكامل.
           <br /><br />
 
-          <span style={{ color: '#000000', fontWeight: 'bold' }}>رسالتنا :</span><br />
+          <span style={{ color: '#000000', fontFamily: "Noto Sans Arabic SemiBold" }}>رسالتنا :</span><br />
           تقديم برامج تأهيلية حديثة تعتمد على التكنلوجيا والتفاعل المباشر، لدعم جاهزية الخريجين.
           <br /><br />
 
-          <span style={{ color: '#000000', fontWeight: 'bold' }}>لماذا متنافس ؟</span><br />
+          <span style={{ color: '#000000', fontFamily: "Noto Sans Arabic SemiBold" }}>لماذا متنافس ؟</span><br />
           نستخدم أحدث التقنيات لتقديم تدريب عملي وفعال.<br />
           نقدم فرص تأهيل وشهادات احترافية تعزز التوظيف.<br />
           لدينا شراكات مع كبرى الجهات التوظيفية لضمان جاهزية الخريجين.<br />

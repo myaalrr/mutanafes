@@ -85,19 +85,19 @@ export default function Navbar() {
       <style jsx>{`
         @media (max-width: 480px) {
           nav.navbar-main {
-            top: 60px !important; /* ارفعيه تحت الهيدر */
+            top: 70px !important; /* ارفعيه تحت الهيدر */
             height: 30px !important; /* خلي الارتفاع أقل للجوال */
             padding: 0 20px !important;
-                        font-size: 12px !important;
+                        font-size: 13px !important;
 
           }
 
           nav.navbar-main div {
-            gap: 12px !important;
+            gap: 10px !important;
           }
 
           nav.navbar-main a {
-            font-size: 12px !important;
+            font-size: 13px !important;
           }
         }
       `}</style>

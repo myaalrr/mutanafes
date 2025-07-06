@@ -69,7 +69,7 @@ export default function Services() {
       <style jsx>{`
         .services-section {
           text-align: center;
-          scroll-margin-top: 170px;
+          scroll-margin-top: 120px;
           height: auto;
           position: relative;
         }
