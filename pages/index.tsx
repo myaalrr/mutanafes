@@ -7,36 +7,26 @@ import About from '../components/homeSections/About';
 import Services from '../components/homeSections/Services';
 import Contact from '../components/homeSections/Contact';
 
+import HRLine from '../components/HRLine'; // ✅ استدعاء المكون الجديد
+
 export default function Home() {
   return (
     <>
       <Header />
       <Navbar />
 
-      <main className="max-w-[1440px]">
+      <main className="max-w-[1440px] w-full px-4 sm:px-6 md:px-8 mx-auto">
         <Hero />
 
         <About />
 
-        <hr
-          style={{
-            border: 'none',
-            borderTop: '2px solid #D1D1D1',
-            width: '50%',
-            margin: '100px auto',
-          }}
-        />
+        {/* ✅ خط فاصل بعد About */}
+        <HRLine margin="50px" thickness="0.5px" color="#D1D1D1" opacity={0.4} width="50%" />
 
         <Services />
 
-        <hr
-          style={{
-            border: 'none',
-            borderTop: '2px solid #D1D1D1',
-            width: '50%',
-            margin: '40px auto',
-          }}
-        />
+        {/* ✅ خط فاصل بعد Services */}
+        <HRLine margin="50px" thickness="0.5px" color="#D1D1D1" opacity={0.4} width="50%" />
 
         <Contact />
       </main>
@@ -45,6 +35,7 @@ export default function Home() {
     </>
   );
 }
+
 
 
 

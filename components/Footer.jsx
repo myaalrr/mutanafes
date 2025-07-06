@@ -1,64 +1,109 @@
 import { FiFacebook } from "react-icons/fi";
-import { RiTwitterXFill } from "react-icons/ri";
+import { RiTwitterXFill, RiYoutubeLine, RiMapPinLine } from "react-icons/ri";
 import { FaInstagram } from "react-icons/fa";
-import { RiYoutubeLine } from "react-icons/ri";
 import { TbBrandLinkedin } from "react-icons/tb";
-import { RiMapPinLine } from "react-icons/ri";
 
 export default function Footer() {
   return (
-    <footer
-      style={{
-        backgroundColor: '#163853',
-        height: '60px',
-        maxWidth: '100%',
-        margin: '0 auto',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '0 40px',
-        paddingLeft: '100px',
-      }}
-    >
-      <div style={{ display: 'flex', gap: '40px' }}>
-        <a href="https://www.facebook.com/people/Mutanafes-Company/pfbid02KX1rzciLoyqN91WeGUMmrGbm3CNmC3N6rbkCmdMfgfEbK8NSAG3VD57HDD3bCCRDl/" target="_blank" rel="noopener noreferrer">
-          <FiFacebook style={{ color: '#fff', fontSize: '20px' }} />
-        </a>
-        <a href="https://x.com/Mutanafes" target="_blank" rel="noopener noreferrer">
-          <RiTwitterXFill style={{ color: '#fff', fontSize: '20px' }} />
-        </a>
-        <a href="https://www.instagram.com/mutanafes/" target="_blank" rel="noopener noreferrer">
-          <FaInstagram style={{ color: '#fff', fontSize: '20px' }} />
-        </a>
-        <a href="https://www.youtube.com/@Mutanafes" target="_blank" rel="noopener noreferrer">
-          <RiYoutubeLine style={{ color: '#fff', fontSize: '20px' }} />
-        </a>
-        <a href="https://www.linkedin.com/company/mutanafes" target="_blank" rel="noopener noreferrer">
-          <TbBrandLinkedin style={{ color: '#fff', fontSize: '20px' }} />
-        </a>
-        <a href="https://maps.app.goo.gl/j6oUs5cPTibQkLdc8" target="_blank" rel="noopener noreferrer">
-          <RiMapPinLine style={{ color: '#fff', fontSize: '20px' }} />
-        </a>
-      </div>
-
-      <div
+    <>
+      <footer
         style={{
-          color: '#fff',
-          fontFamily: "'Noto Sans Arabic SemiBold', sans-serif",
-          fontSize: '14px',
-          position: 'absolute',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          whiteSpace: 'nowrap',
+          backgroundColor: '#163853',
+          padding: '10px 20px',
         }}
       >
-        © 2025 متنافس. جميع الحقوق محفوظة
-      </div>
+        <div
+          className="footer-container"
+          style={{
+            maxWidth: '1280px',
+            margin: '0 auto',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'nowrap',
+            gap: '10px',
+          }}
+        >
+          {/* أيقونات التواصل */}
+          <div
+            className="footer-icons"
+            style={{
+              display: 'flex',
+              gap: '15px',
+              flexWrap: 'nowrap',
+              alignItems: 'center',
+            }}
+          >
+            <a href="https://www.facebook.com/people/Mutanafes-Company/pfbid02KX1rzciLoyqN91WeGUMmrGbm3CNmC3N6rbkCmdMfgfEbK8NSAG3VD57HDD3bCCRDl/" target="_blank" rel="noopener noreferrer">
+              <FiFacebook className="footer-icon" color="#ffffff" />
+            </a>
+            <a href="https://x.com/Mutanafes" target="_blank" rel="noopener noreferrer">
+              <RiTwitterXFill className="footer-icon" color="#ffffff" />
+            </a>
+            <a href="https://www.instagram.com/mutanafes/" target="_blank" rel="noopener noreferrer">
+              <FaInstagram className="footer-icon" color="#ffffff" />
+            </a>
+            <a href="https://www.youtube.com/@Mutanafes" target="_blank" rel="noopener noreferrer">
+              <RiYoutubeLine className="footer-icon" color="#ffffff" />
+            </a>
+            <a href="https://www.linkedin.com/company/mutanafes" target="_blank" rel="noopener noreferrer">
+              <TbBrandLinkedin className="footer-icon" color="#ffffff" />
+            </a>
+            <a href="https://maps.app.goo.gl/j6oUs5cPTibQkLdc8" target="_blank" rel="noopener noreferrer">
+              <RiMapPinLine className="footer-icon" color="#ffffff" />
+            </a>
+          </div>
 
-      <div style={{ width: '120px' }}></div>
-    </footer>
+          {/* النص */}
+          <div
+            className="footer-text"
+            style={{
+              color: '#fff',
+              fontFamily: "'Noto Sans Arabic SemiBold', sans-serif",
+              fontSize: '14px',
+              whiteSpace: 'nowrap',
+              textAlign: 'center',
+            }}
+          >
+            © 2025 متنافس. جميع الحقوق محفوظة
+          </div>
+        </div>
+      </footer>
+
+      <style jsx>{`
+        .footer-icon {
+          font-size: 20px;
+          transition: font-size 0.3s ease;
+        }
+
+        @media (max-width: 480px) {
+          .footer-container {
+            flex-direction: row !important;
+            justify-content: center !important;
+            flex-wrap: nowrap !important;
+            gap: 10px;
+          }
+
+          .footer-icons {
+            flex-wrap: nowrap !important;
+            flex: 1;
+            justify-content: center;
+          }
+
+          .footer-icon {
+            font-size: 12px !important;
+          }
+
+          .footer-text {
+            font-size: 10px !important;
+          }
+        }
+      `}</style>
+    </>
   );
 }
+
+
 
 
 

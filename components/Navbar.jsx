@@ -26,53 +26,84 @@ export default function Navbar() {
     'no-underline transition-colors duration-300 hover:text-[#E46A00] active:text-[#B34F00]';
 
   return (
-    <nav
-      className="w-full px-5 max-w-[1280px] mx-auto text-sm text-black rtl flex flex-row-reverse justify-start items-center"
-      style={{
-        position: 'fixed',
-        height: '200px',
-        zIndex: 1000,
-      }}
-    >
-      {links.map(({ name, label, href, isLink, bold }) => {
-        const textClass = bold ? 'arabic-text-semiBold' : 'arabic-text-Light';
-        const fullClass = `${textClass} ${baseClass}`;
+    <>
+      <nav
+        className="navbar-main"
+        style={{
+          position: 'fixed',
+          width: '100%',
+          maxWidth: '1280px',
+          margin: '0 auto',
+          padding: '0 40px',
+          height: '200px',
+          zIndex: 1000,
+          display: 'flex',
+          alignItems: 'center',
+          boxSizing: 'border-box',
+        }}
+      >
+        <div
+          style={{
+            marginLeft: 'auto',
+            display: 'flex',
+            gap: '20px',
+            alignItems: 'center',
+            flexDirection: 'row-reverse',
+          }}
+        >
+          {links.map(({ name, label, href, isLink, bold }) => {
+            const textClass = bold ? 'arabic-text-semiBold' : 'arabic-text-Light';
+            const fullClass = `${textClass} ${baseClass}`;
 
-        return isLink ? (
-          <Link
-            key={name}
-            href={href}
-            className={fullClass}
-            style={{
-              marginLeft: '20px',
-              color: getLinkColor(name),
-            }}
-            onMouseEnter={() => setHovered(name)}
-            onMouseLeave={() => setHovered('')}
-          >
-            {label}
-          </Link>
-        ) : (
-          <a
-            key={name}
-            href={href}
-            className={fullClass}
-            style={{
-              marginLeft: '20px',
-              color: getLinkColor(name),
-            }}
-            onMouseEnter={() => setHovered(name)}
-            onMouseLeave={() => setHovered('')}
-          >
-            {label}
-          </a>
-        );
-      })}
-    </nav>
+            return isLink ? (
+              <Link
+                key={name}
+                href={href}
+                className={fullClass}
+                style={{ color: getLinkColor(name) }}
+                onMouseEnter={() => setHovered(name)}
+                onMouseLeave={() => setHovered('')}
+              >
+                {label}
+              </Link>
+            ) : (
+              <a
+                key={name}
+                href={href}
+                className={fullClass}
+                style={{ color: getLinkColor(name) }}
+                onMouseEnter={() => setHovered(name)}
+                onMouseLeave={() => setHovered('')}
+              >
+                {label}
+              </a>
+            );
+          })}
+        </div>
+      </nav>
+
+      <style jsx>{`
+        @media (max-width: 480px) {
+          nav.navbar-main {
+            top: 60px !important; /* ارفعيه تحت الهيدر */
+            height: 30px !important; /* خلي الارتفاع أقل للجوال */
+            padding: 0 20px !important;
+                        font-size: 12px !important;
+
+          }
+
+          nav.navbar-main div {
+            gap: 12px !important;
+          }
+
+          nav.navbar-main a {
+            font-size: 12px !important;
+          }
+        }
+      `}</style>
+    </>
   );
 }
-
-
 
 
 

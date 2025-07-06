@@ -1,72 +1,104 @@
 export default function About() {
   return (
-    <section
-      id="about"
-      style={{ position: 'relative', maxWidth: '100%', scrollMarginTop: '110px', marginTop: '400px' }}
-    >
-      <div style={{ position: 'relative', zIndex: 1, marginTop: '-230px' }}>
-        <h2
-          className="custom-arabic-semibold text-[#000000]"
-          style={{
-            fontSize: '30px',
-            direction: 'rtl',
-            marginRight: '202px',
-            position: 'relative',
-            zIndex: 1,
-          }}
-        >
-          عن متنافـــس
-        </h2>
+    <section id="about" className="about-section">
+      <div className="about-container">
+        <h2 className="about-heading">عن متنافـــــس</h2>
 
-        <p
-          className="Urbanist-Light text-[#000000]"
-          style={{
-            fontSize: '26px',
-            direction: 'ltr',
-            marginLeft: '957px',
-            top: '-30px',
-            fontWeight: 'bold',
-            position: 'relative',
-            zIndex: 1,
-          }}
-        >
-          About Mutanafes
-        </p>
+        <p className="about-sub">About Mutanafes</p>
 
-        <p
-          className="custom-arabic-light text-[#333]"
-          style={{
-            fontSize: '20px',
-            direction: 'rtl',
-            marginTop: '60px',
-            transform: 'translateX(-150px)',
-            marginRight: '90px',
-            lineHeight: '1.8',
-          }}
-        >
+        <p className="about-text">
           <span style={{ color: '#E46A00', fontWeight: 'bold' }}>متنافس </span>
-          هي منصة تأهيل مهني متكاملة تهدف إلى تمكين الطلاب والخريجين للاستعداد لسوق العمل
-          عبر مجموعة<br /> من الخدمات المتكاملة التي تهدف إلى تعزيز مهاراتهم وتسريع وصولهم إلى الفرص الوظيفية.<br /> تأسست متنافس عام 2024 في حاضنة الأعمال بجامعة المجمعة، وتسعى إلى أن تكون المنصة
-          الرائدة في تأهيل الكوارد الشابة <br /> وربطها بفرص العمل المناسبة.
-          <br /> <br /><br />
+          هي منصة تأهيل مهني متكاملة تهدف إلى تمكين الطلاب والخريجين للاستعداد لسوق العمل عبر مجموعة من الخدمات المتكاملة التي تهدف إلى تعزيز مهاراتهم وتسريع وصولهم إلى الفرص الوظيفية.
+          <br /> تأسست متنافس عام 2024 في حاضنة الأعمال بجامعة المجمعة، وتسعى إلى أن تكون المنصة الرائدة في تأهيل الكوارد الشابة وربطها بفرص العمل المناسبة.
+          <br /><br /><br />
 
-          <span style={{ color: '#000000', fontWeight: 'bold' }}>رؤيتنا : </span>
-          <br />
+          <span style={{ color: '#000000', fontWeight: 'bold' }}>رؤيتنا :</span><br />
           أن نكون الجسر الذي يربط الخريجين بسوق العمل عبر تدريب عملي متكامل.
-          <br /> <br />
+          <br /><br />
 
-          <span style={{ color: '#000000', fontWeight: 'bold' }}>رسالتنا : </span>
-          <br />
+          <span style={{ color: '#000000', fontWeight: 'bold' }}>رسالتنا :</span><br />
           تقديم برامج تأهيلية حديثة تعتمد على التكنلوجيا والتفاعل المباشر، لدعم جاهزية الخريجين.
-          <br /> <br />
+          <br /><br />
 
-          <span style={{ color: '#000000', fontWeight: 'bold' }}> لماذا متنافس ؟ </span>
-          <br />
+          <span style={{ color: '#000000', fontWeight: 'bold' }}>لماذا متنافس ؟</span><br />
           نستخدم أحدث التقنيات لتقديم تدريب عملي وفعال.<br />
           نقدم فرص تأهيل وشهادات احترافية تعزز التوظيف.<br />
           لدينا شراكات مع كبرى الجهات التوظيفية لضمان جاهزية الخريجين.<br />
         </p>
       </div>
+
+      <style jsx>{`
+        .about-section {
+          position: relative;
+          max-width: 100%;
+          scroll-margin-top: 130px;
+          padding: 0 40px;
+          box-sizing: border-box;
+          height: 800px;
+        }
+
+        .about-container {
+          position: relative;
+          z-index: 1;
+          max-width: 900px;
+          margin: 0 auto;
+          text-align: right;
+        }
+
+        .about-heading {
+          font-size: 30px;
+          direction: rtl;
+          margin-top: 100px;
+          margin-bottom: -40px;
+          font-family: 'Noto Sans Arabic SemiBold', sans-serif;
+          color: #000;
+        }
+
+        .about-sub {
+          font-size: 30px;
+          direction: ltr;
+          margin-bottom: 100px;
+          transform: translateX(-40px);
+          font-family: 'Urbanist-SemiBold', sans-serif;
+          color: #000;
+        }
+
+        .about-text {
+          font-size: 18px;
+          direction: rtl;
+          line-height: 1.8;
+          text-align: right;
+          color: #000;
+          font-family: 'Noto Sans Arabic Light', sans-serif;
+        }
+
+        /* ✅ نسخة الجوال */
+        @media (max-width: 450px) {
+          .about-section {
+            height: auto;
+          }
+
+          .about-heading {
+            font-size: 25px;
+          }
+
+          .about-sub {
+            font-size: 25px;
+            transform: translateX(-35px);
+            margin-bottom: 50px;
+          }
+
+          .about-text {
+            font-size: 15px;
+            line-height: 1.6;
+          }
+        }
+      `}</style>
     </section>
   );
 }
+
+
+
+
+
