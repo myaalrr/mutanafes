@@ -131,7 +131,7 @@ export default function Contact() {
           }
 
           .contact-icon {
-            font-size: 12px !important;
+            font-size: 20px !important;
           }
 
           .contact-text {
