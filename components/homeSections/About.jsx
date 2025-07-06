@@ -2,7 +2,7 @@ export default function About() {
   return (
     <section id="about" className="about-section">
       <div className="about-container">
-        <h2 className="about-heading">عن متنافـــــس</h2>
+        <h2 className="about-heading">عن متنافس</h2>
 
         <p className="about-sub">About Mutanafes</p>
 
@@ -31,7 +31,7 @@ export default function About() {
         .about-section {
           position: relative;
           max-width: 100%;
-          scroll-margin-top: 130px;
+          scroll-margin-top: 180px;
           padding: 0 40px;
           box-sizing: border-box;
           height: 800px;
@@ -49,16 +49,16 @@ export default function About() {
           font-size: 30px;
           direction: rtl;
           margin-top: 100px;
-          margin-bottom: -40px;
+          margin-bottom: -30px;
           font-family: 'Noto Sans Arabic SemiBold', sans-serif;
           color: #000;
         }
 
         .about-sub {
-          font-size: 30px;
+          font-size: 20px;
           direction: ltr;
           margin-bottom: 100px;
-          transform: translateX(-40px);
+          transform: translateX(-50px);
           font-family: 'Urbanist-SemiBold', sans-serif;
           color: #000;
         }
@@ -76,7 +76,7 @@ export default function About() {
         @media (max-width: 450px) {
           .about-section {
             height: auto;
-          margin-bottom: -50px;
+          margin-bottom: 50px;
 
           }
 
@@ -85,8 +85,8 @@ export default function About() {
           }
 
           .about-sub {
-            font-size: 25px;
-            transform: translateX(-35px);
+            font-size: 17px;
+            transform: translateX(-40px);
             margin-bottom: 50px;
           }
 

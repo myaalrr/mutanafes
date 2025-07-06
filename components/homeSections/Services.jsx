@@ -69,7 +69,7 @@ export default function Services() {
       <style jsx>{`
         .services-section {
           text-align: center;
-          scroll-margin-top: 100px;
+          scroll-margin-top: 170px;
           height: auto;
           position: relative;
         }
@@ -77,7 +77,7 @@ export default function Services() {
         .services-title {
           font-size: 30px;
           margin-bottom: 100px;
-          color: #e46a00;
+          color: #000000;
           font-family: 'Noto Sans Arabic SemiBold', sans-serif;
         }
 
@@ -143,7 +143,7 @@ export default function Services() {
         @media (max-width: 480px) {
           .services-section {
             height: auto;
-            padding-bottom: auto;
+                margin-bottom: 50px;
           }
 
           .services-title {
@@ -154,7 +154,7 @@ export default function Services() {
           .services-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr); /* كل صف فيه خدمتين */
-            gap: 30px 10px;
+            gap: 60px 10px;
             justify-items: center;
           }
 
