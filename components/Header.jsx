@@ -91,8 +91,8 @@ export default function Header() {
         .login-btn {
           background-color: #000;
           color: #fff;
-          padding: 6px 25px;
-          border-radius: 30px;
+          padding: 4px 25px;
+          border-radius: 20px;
           text-decoration: none;
           transition: background-color 0.3s ease;
           font-size: 15px;
@@ -108,7 +108,7 @@ export default function Header() {
           border: 2px solid #000;
           color: #000;
           padding: 4px 25px;
-          border-radius: 30px;
+          border-radius: 20px;
           text-decoration: none;
           transition: background-color 0.3s ease, color 0.3s ease;
           font-size: 15px;
@@ -128,7 +128,7 @@ export default function Header() {
           }
 
           div.header-container {
-            padding: 0 20px !important;
+            padding: 0 10px !important;
           }
 
           .logo-wrapper {
@@ -136,7 +136,7 @@ export default function Header() {
           }
 
           .logo-text-wrapper {
-            width: 0px !important;
+            width: 80px !important;
           }
 
           .contact-info {
