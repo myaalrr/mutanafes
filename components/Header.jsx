@@ -51,7 +51,6 @@ export default function Header() {
             </div>
           </div>
 
-          {/* روابط */}
           <div
             className="contact-info"
             style={{
@@ -61,7 +60,7 @@ export default function Header() {
               justifyContent: 'flex-end',
               direction: 'rtl',
               textAlign: 'right',
-              fontSize: '15px', // هنا أيضا تأكدت
+              fontSize: '15px', 
             }}
           >
             <a
@@ -104,17 +103,19 @@ export default function Header() {
           background-color: #333;
         }
 
-        .signup-btn {
-          border: 2px solid #000;
-          color: #000;
-          padding: 4px 25px;
-          border-radius: 20px;
-          text-decoration: none;
-          transition: background-color 0.3s ease, color 0.3s ease;
-          font-size: 15px;
-          display: inline-block;
-          font-family: "Noto Sans Arabic Light";
-        }
+  .signup-btn {
+  border: 2px solid #000;
+  color: #000;
+  padding: 4px 25px;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 15px;
+  display: inline-block;
+  font-family: "Noto Sans Arabic Light";
+  box-sizing: border-box;
+}
+
 
         .signup-btn:hover {
           background-color: #000;
