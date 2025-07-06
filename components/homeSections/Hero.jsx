@@ -27,23 +27,25 @@ export default function Hero() {
           justify-content: center;
           align-items: center;
           height: 700px;
-          background-image: url('/p.jpg'); /* ← صورة الديسكتوب */
+          background-image: url('/p.jpg');
           background-size: cover;
           background-position: center;
           text-align: center;
           color: white;
           direction: rtl;
           font-family: 'Noto Sans Arabic Light';
+          padding: 0 20px;
         }
 
         .hero-text {
-          max-width: 90%;
+          max-width: 100%;
         }
 
         .hero-title {
           font-size: 24px;
           font-family: 'Noto Sans Arabic Light';
           position: relative;
+          line-height: 1.8;
         }
 
         .highlight {
@@ -67,14 +69,10 @@ export default function Hero() {
           border-radius: 2px;
         }
 
-        /* ===== نسخة الجوال ===== */
+        /* نسخة الجوال */
         .hero-title-mobile {
           font-size: 18px;
           margin-bottom: 10px;
-        }
-
-        .hero-subtitle-mobile {
-          font-size: 14px;
           line-height: 1.6;
         }
 
@@ -87,20 +85,19 @@ export default function Hero() {
           content: "";
           position: absolute;
           right: 0;
-          bottom: -8px;
+          bottom: -4px;
           height: 2px;
           width: 100%;
           background-color: #e46a00;
           border-radius: 2px;
         }
 
-        /* ===== إظهار وإخفاء ===== */
+        /* إظهار وإخفاء */
         .mobile {
           display: none;
         }
 
         @media (max-width: 640px) {
-        
           .desktop {
             display: none;
           }
@@ -111,21 +108,22 @@ export default function Hero() {
 
           .hero-section {
             height: 500px;
-            padding: 0 16px;
-
-            /* ✅ التحكم بالصورة في الجوال فقط */
-            background-image: url('/p.jpg'); /* ← صورة مختلفة للجوال */
             background-position: top;
-            background-size: cover;
-
+            padding: 0 16px;
           }
 
           .hero-text {
             max-width: 95%;
+          }
+
+          .hero-title-mobile {
+            font-size: 16px;
+            font-family: 'Noto Sans Arabic Light';
           }
         }
       `}</style>
     </section>
   );
 }
+
 

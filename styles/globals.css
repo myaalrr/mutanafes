@@ -34,6 +34,7 @@ body {
   font-weight: 600;
   font-size: 1.5rem;
 }
+
 .Urbanist-SemiBold {
   font-family: 'Urbanist-SemiBold', Tahoma, Arial, sans-serif;
   font-weight: 600;
@@ -74,6 +75,23 @@ body {
   font-weight: 500;
   font-style: normal;
 }
+
+/* ✅ إصلاح التمدد الجانبي في الجوال */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ✅ حماية من العناصر اللي تسبب تجاوز */
+img, div, section, header, nav, footer {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 
 
 

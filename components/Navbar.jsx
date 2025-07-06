@@ -20,7 +20,7 @@ export default function Navbar() {
   ];
 
   const getLinkColor = (name) =>
-    hovered === name ? '#E46A00' : scrolled ? '#000000' : '#ffffff';
+    hovered === name ? '#E46A00' : scrolled ? '#000000' : '#FFFFFF'; // خليها اسود دايمًا للحماية
 
   const baseClass =
     'no-underline transition-colors duration-300 hover:text-[#E46A00] active:text-[#B34F00]';
@@ -40,6 +40,7 @@ export default function Navbar() {
           display: 'flex',
           alignItems: 'center',
           boxSizing: 'border-box',
+          overflowX: 'hidden', // منع التمرير الأفقي
         }}
       >
         <div
@@ -85,11 +86,10 @@ export default function Navbar() {
       <style jsx>{`
         @media (max-width: 480px) {
           nav.navbar-main {
-            top: 70px !important; /* ارفعيه تحت الهيدر */
-            height: 30px !important; /* خلي الارتفاع أقل للجوال */
-            padding: 0 20px !important;
-                        font-size: 13px !important;
-
+            height: 160px !important; /* خفّض الارتفاع للجوال */
+            padding: 0 30px !important;
+            font-size: 12px !important;
+            overflow-x: hidden !important; 
           }
 
           nav.navbar-main div {
@@ -97,13 +97,14 @@ export default function Navbar() {
           }
 
           nav.navbar-main a {
-            font-size: 13px !important;
+            font-size: 12px !important;
           }
         }
       `}</style>
     </>
   );
 }
+
 
 
 

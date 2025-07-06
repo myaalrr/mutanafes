@@ -14,6 +14,7 @@ export default function Header() {
           display: 'flex',
           justifyContent: 'center',
           transition: 'height 0.3s ease',
+          overflowX: 'hidden',
         }}
         className="header-main"
       >
@@ -27,26 +28,23 @@ export default function Header() {
             gap: '20px',
             padding: '0 40px',
             boxSizing: 'border-box',
-            fontSize: '15px',
+            fontSize: '15px', 
             color: '#000',
             transition: 'padding 0.3s ease',
           }}
           className="header-container"
         >
-          {/* الشعار */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div className="logo-wrapper" style={{ position: 'relative', width: 50, height: 50 }}>
+            <div className="logo-wrapper" style={{ position: 'relative', width: 60, height: 60 }}>
               <Image
-                src="/df475dc1-e743-4e76-9407-d8abeca1055e.png.png"
-                alt="Logo"
+                src="/logo.png"
                 fill
                 style={{ objectFit: 'contain' }}
               />
             </div>
-            <div className="logo-text-wrapper" style={{ position: 'relative', width: 100, height: 30 }}>
+            <div className="logo-text-wrapper" style={{ position: 'relative', width: 120, height: 50 }}>
               <Image
-                src="/d8e70213-98ea-49e6-a02c-4cfd2367f008.png.png"
-                alt="Logo Text"
+                src="/logoText.png" 
                 fill
                 style={{ objectFit: 'contain' }}
               />
@@ -63,7 +61,7 @@ export default function Header() {
               justifyContent: 'flex-end',
               direction: 'rtl',
               textAlign: 'right',
-              fontSize: '15 px',
+              fontSize: '15px', // هنا أيضا تأكدت
             }}
           >
             <a
@@ -99,6 +97,7 @@ export default function Header() {
           transition: background-color 0.3s ease;
           font-size: 15px;
           display: inline-block;
+          font-family: "Noto Sans Arabic Light"; /* ممكن تحط هنا عشان توحد */
         }
 
         .login-btn:hover {
@@ -114,6 +113,7 @@ export default function Header() {
           transition: background-color 0.3s ease, color 0.3s ease;
           font-size: 15px;
           display: inline-block;
+          font-family: "Noto Sans Arabic Light";
         }
 
         .signup-btn:hover {
@@ -124,6 +124,7 @@ export default function Header() {
         @media (max-width: 480px) {
           header.header-main {
             height: 60px !important;
+            overflow-x: hidden !important; /* تأكد أنه هنا ايضا */
           }
 
           div.header-container {
@@ -135,7 +136,7 @@ export default function Header() {
           }
 
           .logo-text-wrapper {
-            width: 80px !important;
+            width: 0px !important;
           }
 
           .contact-info {
@@ -152,4 +153,5 @@ export default function Header() {
     </>
   );
 }
+
 

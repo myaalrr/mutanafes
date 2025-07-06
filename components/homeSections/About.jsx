@@ -7,9 +7,10 @@ export default function About() {
         <p className="about-sub">About Mutanafes</p>
 
         <p className="about-text">
-          <span style={{ color: '#E46A00',fontFamily: "Noto Sans Arabic SemiBold", }}>متنافس </span>
+          <span style={{ color: '#E46A00', fontFamily: "Noto Sans Arabic SemiBold" }}>متنافس </span>
           هي منصة تأهيل مهني متكاملة تهدف إلى تمكين الطلاب والخريجين للاستعداد لسوق العمل عبر مجموعة من الخدمات المتكاملة التي تهدف إلى تعزيز مهاراتهم وتسريع وصولهم إلى الفرص الوظيفية.
-          <br /><br /> تأسست متنافس عام 2024 في حاضنة الأعمال بجامعة المجمعة، وتسعى إلى أن تكون المنصة الرائدة في تأهيل الكوارد الشابة وربطها بفرص العمل المناسبة.
+          <br /><br />
+          تأسست متنافس عام 2024 في حاضنة الأعمال بجامعة المجمعة، وتسعى إلى أن تكون المنصة الرائدة في تأهيل الكوارد الشابة وربطها بفرص العمل المناسبة.
           <br /><br /><br />
 
           <span style={{ color: '#000000', fontFamily: "Noto Sans Arabic SemiBold" }}>رؤيتنا :</span><br />
@@ -34,7 +35,7 @@ export default function About() {
           scroll-margin-top: 180px;
           padding: 0 40px;
           box-sizing: border-box;
-          height: 800px;
+          min-height: 800px;
         }
 
         .about-container {
@@ -56,7 +57,7 @@ export default function About() {
 
         .about-sub {
           font-size: 20px;
-          direction: ltr;
+          direction: rtl;
           margin-bottom: 100px;
           transform: translateX(-50px);
           font-family: 'Urbanist-SemiBold', sans-serif;
@@ -75,9 +76,8 @@ export default function About() {
         /* ✅ نسخة الجوال */
         @media (max-width: 450px) {
           .about-section {
-            height: auto;
-          margin-bottom: 50px;
-
+            min-height: auto;
+            margin-bottom: 50px;
           }
 
           .about-heading {
@@ -91,17 +91,16 @@ export default function About() {
           }
 
           .about-text {
-            font-size: 14px;
+            font-size: 13px;
             line-height: 1.8;
-             max-width: 330px;
-
-
+            max-width: 330px;
           }
         }
       `}</style>
     </section>
   );
 }
+
 
 
 
