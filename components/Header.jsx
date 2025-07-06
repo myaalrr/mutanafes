@@ -105,12 +105,12 @@ export default function Header() {
           }
 
           .logo-text-wrapper {
-            width: 65px !important;
+            width: 70px !important;
           }
 
           .contact-info {
             gap: 10px !important;
-            font-size: 8px !important;
+            font-size: 10px !important;
           }
 
           .icon {

@@ -69,7 +69,7 @@ export default function Hero() {
 
         /* ===== نسخة الجوال ===== */
         .hero-title-mobile {
-          font-size: 15px;
+          font-size: 18px;
           margin-bottom: 10px;
         }
 

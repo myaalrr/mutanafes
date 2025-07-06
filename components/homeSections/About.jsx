@@ -91,7 +91,7 @@ export default function About() {
           }
 
           .about-text {
-            font-size: 12px;
+            font-size: 13px;
             line-height: 1.8;
 
           }

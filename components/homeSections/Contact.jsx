@@ -141,7 +141,7 @@ export default function Contact() {
           }
 
           .contact-link {
-            font-size: 12px !important;
+            font-size: 13px !important;
             color: #000000 !important;
           }
 

@@ -172,7 +172,7 @@ export default function Services() {
           .circle-bg {
             width: 15px;
             height: 15px;
-            left: 12px;
+            left: 13px;
           }
 
           .service-icon {
@@ -180,13 +180,13 @@ export default function Services() {
           }
 
           .service-label {
-            font-size: 10px;
+            font-size: 13px;
           }
 
           .service-description {
-            font-size: 10px;
+            font-size: 12px;
             line-height: 1.8;
-            max-width: 120px;
+            max-width: 150px;
           }
         }
       `}</style>
