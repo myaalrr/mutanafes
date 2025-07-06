@@ -1,4 +1,3 @@
-// components/HRLine.js
 export default function HRLine({
   margin = '40px',
   thickness = '1px',

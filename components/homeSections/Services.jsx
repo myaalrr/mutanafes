@@ -16,7 +16,7 @@ export default function Services() {
       link: "/services/photography", // رابط خاص بالخدمة
     },
     {
-      label: " LinkedIn تحسين حسابات ",
+      label: "LinkedIn تحسين  حسابات ",
       description: "إنشاء حسابات مهنية جذابة ومراجعة الحسابات الشخصية",
       Icon: PiLinkedinLogoThin,
       link: "/services/linkedin",
@@ -176,12 +176,12 @@ export default function Services() {
           }
 
           .service-icon {
-            font-size: 20px;
+            font-size: 25px;
           }
 
           .service-label {
             font-size: 13px;
-             max-width: 130px;
+             max-width: 140px;
 
           }
 
