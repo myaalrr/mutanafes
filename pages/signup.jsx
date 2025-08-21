@@ -14,15 +14,35 @@ export default function Signup() {
   const [confirmation, setConfirmation] = useState(null);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("info");
+  const [accountExists, setAccountExists] = useState(false);
 
   const sendOtp = async () => {
     try {
-      if (!name || !phone) {
+      if (!name) {
         setMessageType("error");
-        setMessage("يرجى إدخال الاسم والرقم ❌");
+        setMessage("يرجى إدخال الاسم ❌");
         return;
       }
 
+      // التأكد من رقم الهاتف
+      if (!phone.match(/^05\d{8}$/)) {
+        setMessageType("error");
+        setMessage("يرجى إدخال رقم هاتف صحيح ❌");
+        return;
+      }
+
+      const formattedPhone = "+966" + phone.slice(1);
+
+      // التحقق إذا الحساب موجود مسبقًا
+      const snapshot = await get(ref(db, `users/${formattedPhone}/name`));
+      if (snapshot.exists()) {
+        setAccountExists(true);
+        setMessageType("info");
+        setMessage("الحساب موجود مسبقًا");
+        return;
+      }
+
+      // إعداد reCAPTCHA invisible
       if (!window.recaptchaVerifier) {
         window.recaptchaVerifier = new RecaptchaVerifier(
           "recaptcha-container",
@@ -31,17 +51,11 @@ export default function Signup() {
         );
       }
 
-      const formattedPhone = phone.startsWith("0") ? "+966" + phone.slice(1) : "+966" + phone;
-
-      // تحقق إذا الحساب موجود مسبقًا
-      const snapshot = await get(ref(db, `users/${formattedPhone}/name`));
-      if (snapshot.exists()) {
-        setMessageType("error");
-        setMessage("الحساب موجود مسبقًا، يرجى تسجيل الدخول ❌");
-        return;
-      }
-
-      const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, window.recaptchaVerifier);
+      const confirmationResult = await signInWithPhoneNumber(
+        auth,
+        formattedPhone,
+        window.recaptchaVerifier
+      );
       setConfirmation(confirmationResult);
       setMessageType("success");
       setMessage("تم إرسال رمز التحقق ✅");
@@ -74,27 +88,107 @@ export default function Signup() {
     <div style={containerStyle}>
       <h2 style={titleStyle}>إنشاء حساب</h2>
 
-      <input type="text" placeholder="الاسم الكامل" value={name} onChange={(e) => setName(e.target.value)} style={inputStyle} />
-      <input type="tel" placeholder="05XXXXXXXX" value={phone} onChange={(e) => setPhone(e.target.value)} style={inputStyle} />
+      <input
+        type="text"
+        placeholder="الاسم الكامل"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        style={inputStyle}
+      />
+      <input
+        type="tel"
+        placeholder="05XXXXXXXX"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
+        style={inputStyle}
+      />
 
       {!confirmation ? (
-        <button style={buttonStyle} onClick={sendOtp}>إرسال الرمز</button>
+        <button style={buttonStyle} onClick={sendOtp}>
+          إرسال الرمز
+        </button>
       ) : (
         <>
-          <input type="text" placeholder="أدخل الرمز" value={otp} onChange={(e) => setOtp(e.target.value)} style={inputStyle} />
-          <button style={buttonStyle} onClick={verifyOtp}>تأكيد الرمز</button>
+          <input
+            type="text"
+            placeholder="أدخل الرمز"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+            style={inputStyle}
+          />
+          <button style={buttonStyle} onClick={verifyOtp}>
+            تأكيد الرمز
+          </button>
         </>
       )}
 
-      {message && <p style={{ ...messageStyle, color: messageType === "success" ? "#637e64ff" : "#C49E7D" }}>{message}</p>}
+      {message && (
+        <p
+          style={{
+            ...messageStyle,
+            color: messageType === "success" ? "#637e64ff" : "#C49E7D",
+          }}
+        >
+          {message}
+        </p>
+      )}
+
+      {accountExists && (
+        <div style={noticeStyle}>
+          الحساب موجود مسبقًا،{" "}
+          <button style={linkStyle} onClick={() => router.push("/login")}>
+            سجل دخولك من هنا
+          </button>
+        </div>
+      )}
 
       <div id="recaptcha-container"></div>
     </div>
   );
 }
 
-const containerStyle = { maxWidth: 400, margin: "50px auto", padding: 20, fontFamily: "IBMPlexArabic" };
+const containerStyle = {
+  maxWidth: 400,
+  margin: "50px auto",
+  padding: 20,
+  fontFamily: "IBMPlexArabic",
+};
 const titleStyle = { textAlign: "center", marginBottom: 20 };
-const inputStyle = { padding: "12px", marginBottom: "12px", borderRadius: "8px", border: "1px solid #f5f5f5", fontSize: "16px", width: "100%", boxSizing: "border-box" };
-const buttonStyle = { backgroundColor: "#C49E7D", color: "white", border: "none", borderRadius: "8px", padding: "12px", fontSize: "16px", cursor: "pointer", width: "100%" };
+const inputStyle = {
+  padding: "12px",
+  marginBottom: "12px",
+  borderRadius: "8px",
+  border: "1px solid #f5f5f5",
+  fontSize: "16px",
+  width: "100%",
+  boxSizing: "border-box",
+};
+const buttonStyle = {
+  backgroundColor: "#C49E7D",
+  color: "white",
+  border: "none",
+  borderRadius: "8px",
+  padding: "12px",
+  fontSize: "16px",
+  cursor: "pointer",
+  width: "100%",
+};
 const messageStyle = { fontSize: "14px", marginTop: "10px" };
+const noticeStyle = {
+  marginTop: "15px",
+  padding: "10px",
+  backgroundColor: "#f5f5f5",
+  borderRadius: "8px",
+  textAlign: "center",
+  fontSize: "14px",
+};
+const linkStyle = {
+  background: "none",
+  border: "none",
+  color: "#C49E7D",
+  cursor: "pointer",
+  textDecoration: "underline",
+  padding: 0,
+  fontSize: "14px",
+};
+
