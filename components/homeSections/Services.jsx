@@ -1,199 +1,234 @@
-import {
-  PiCameraThin,
-  PiReadCvLogoThin,
-  PiLinkedinLogoThin,
-  PiHandshakeThin,
-  PiBriefcaseThin,
-  PiUsersThreeThin,
-} from "react-icons/pi";
+/*my-website > components > homeSection > Services.jsx */
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Services() {
+  const [showBar, setShowBar] = useState(false);
+  const [selectedServices, setSelectedServices] = useState([]);
+
   const services = [
-    {
-      label: "تصوير احترافي",
-      description: "جلسات تصوير لتحسين الصور الشخصية على المنصات الإجتماعية",
-      Icon: PiCameraThin,
-      link: "/services/photography", // رابط خاص بالخدمة
-    },
-    {
-      label: "LinkedIn تحسين  حسابات ",
-      description: "إنشاء حسابات مهنية جذابة ومراجعة الحسابات الشخصية",
-      Icon: PiLinkedinLogoThin,
-      link: "/services/linkedin",
-    },
-    {
-      label: "إعداد السيرة الذاتية",
-      description: "كتابة سيرة ذاتية احترافية تتناسب مع معايير الشركات",
-      Icon: PiReadCvLogoThin,
-      link: "/services/cv-preparation",
-    },
-    {
-      label: "شراكات مع منصات التوظيف",
-      description: "التعاون مع منصات توظيف لتسهيل الوصول إلى فرص العمل",
-      Icon: PiHandshakeThin,
-      link: "/services/partnerships",
-    },
-    {
-      label: "التدريب على المقابلات الوظيفية",
-      description: "مقابلات تجريبية وتقييم الأداء لتطوير الثقة",
-      Icon: PiBriefcaseThin,
-      link: "/services/interview-training",
-    },
-    {
-      label: "فرص التدريب التعاوني",
-      description: "توفير فرص تدريب",
-      Icon: PiUsersThreeThin,
-      link: "/services/internships",
-    },
+    { label: "تصوير احترافي", description: "جلسات تصوير لتحسين الصور الشخصية على المنصات الإجتماعية", image: "/icons/كاميرا.gif" },
+    { label: "تحسين حسابات LinkedIn", description: "إنشاء حسابات مهنية جذابة ومراجعة الحسابات الشخصية", image: "/icons/لينكدإن.gif" },
+    { label: "إعداد السيرة الذاتية", description: "كتابة سيرة ذاتية احترافية تتناسب مع معايير الشركات", image: "/icons/سيرة.gif" },
+    { label: "شراكات مع منصات التوظيف", description: "التعاون مع منصات توظيف لتسهيل الوصول إلى فرص العمل", image: "/icons/شراكات.gif" },
+    { label: "التدريب على المقابلات الوظيفية", description: "مقابلات تجريبية وتقييم الأداء لتطوير الثقة", image: "/icons/عمل.gif" },
+    { label: "فرص التدريب التعاوني", description: "توفير فرص تدريب", image: "/icons/تدريب.gif" },
   ];
+
+  const toggleService = (label) => {
+    if (selectedServices.includes(label)) {
+      setSelectedServices(selectedServices.filter(item => item !== label));
+    } else {
+      setSelectedServices([...selectedServices, label]);
+    }
+  };
 
   return (
     <section id="services" className="services-section">
-      <h2 className="services-title">خدماتنا</h2>
+      <motion.h2
+        initial={{ opacity: 0, y: 50, scale: 0.7 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        style={{
+          position: 'sticky',
+          top: '15%',
+          fontSize: 'clamp(14px, 4vw, 24px)',
+          fontFamily: 'NotoSansArabicCondensedExtraLight',
+          color: '#C49E7D',
+          textAlign: 'right',
+          marginRight: '3%',
+          marginTop: '1rem',
+        }}
+      >
+        خدماتنا
+      </motion.h2>
 
       <div className="services-container">
-        {services.map(({ label, Icon, description, link }, i) => (
+        {services.map(({ label, image, description }, i) => (
           <div className="service-box" key={i}>
             <div className="icon-wrapper">
-              <div className="circle-bg" />
-              <Icon className="service-icon" />
+              <img src={image} alt={label} className="service-image" />
             </div>
-            <a href={link} className="service-label">
-              {label}
-            </a>
+            <span className="service-label">{label}</span>
             <p className="service-description">{description}</p>
           </div>
         ))}
       </div>
 
+      <div className="order-wrapper">
+        <button
+          className="order-button"
+          onClick={() => setShowBar(!showBar)}
+        >
+          اطلب خدمة
+        </button>
+
+        <AnimatePresence>
+          {showBar && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4 }}
+              className="order-bar"
+            >
+              {services.map(({ label }, i) => (
+                <div
+                  key={i}
+                  className={`order-bar-item ${selectedServices.includes(label) ? 'selected' : ''}`}
+                  onClick={() => toggleService(label)}
+                >
+                  {label}
+                </div>
+              ))}
+
+              <button
+                className="order-button"
+                onClick={() => alert(`تم تأكيد الخدمات: ${selectedServices.join(", ")}`)}
+                disabled={selectedServices.length === 0}
+              >
+                تأكيد
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
       <style jsx>{`
         .services-section {
           text-align: center;
-          scroll-margin-top: 120px;
-          height: auto;
+          scroll-margin-top: 10vh;
           position: relative;
-        }
-
-        .services-title {
-          font-size: 30px;
-          margin-bottom: 100px;
-          color: #000000;
-          font-family: 'Noto Sans Arabic SemiBold', sans-serif;
         }
 
         .services-container {
-          position: relative;
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          gap: 40px;
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10vh 3vw;
+          justify-items: center;
+          max-width: 90vw;
+          margin: 0 auto;
+          padding: 2vh;
         }
 
         .service-box {
+          position: relative;
           text-align: center;
-          width: 30%;
-          min-width: 200px;
+          width: 100%;
+          max-width: 30vw;
+        }
+
+        .service-box::before {
+          content: "";
+          position: absolute;
+          top: 10%;
+          left: 5%;
+          width: 90%;
+          height: 80%;
+          background-color: #F5F5F5;
+          border-radius: 40px;
+          z-index: 0;
         }
 
         .icon-wrapper {
           position: relative;
-          width: 50px;
-          height: 50px;
-          margin: 0 auto;
+          width: clamp(40px, 10vw, 100px);
+          height: clamp(40px, 10vw, 100px);
+          margin: 0 auto 1vh;
+          z-index: 1;
         }
 
-        .circle-bg {
-          width: 25px;
-          height: 25px;
-          border-radius: 50%;
-          background-color: #d1d1d1;
-          position: absolute;
-          top: 3px;
-          left: 20px;
-          z-index: 0;
-          transform: rotate(15deg);
+        .service-image {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
         }
 
-        .service-icon {
-          font-size: 30px;
-          color: #000000;
+        .service-label, .service-description {
           position: relative;
           z-index: 1;
         }
 
         .service-label {
-          font-size: 15px;
-          color: #000000;
+          font-size: clamp(12px, 2vw, 18px);
+          color: #163853;
           display: inline-block;
-          font-family: 'Noto Sans Arabic SemiBold', sans-serif;
-          text-decoration: none;
-          cursor: pointer;
+          font-family: 'IBMPlexArabic-Bold', sans-serif;
+          margin-top: 1vh;
         }
 
         .service-description {
-          font-size: 15px;
+          font-size: clamp(10px, 1.8vw, 16px);
           color: #666;
-          font-family: 'Noto Sans Arabic Light';
-          margin-top: 0px;
-          line-height: 1.4;
-          max-width: 180px;
+          font-family: 'IBMPlexArabic';
+          margin-top: 0.5vh;
+          line-height: 1.5;
+          max-width: 80%;
           margin-inline: auto;
         }
 
-        @media (max-width: 480px) {
-          .services-section {
-            height: auto;
-                margin-bottom: 50px;
-          }
+        .order-wrapper {
+          margin-top: 4vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
 
-          .services-title {
-            margin-bottom: 100px;
-            font-size: 25px;
-          }
+        .order-button {
+          padding: 1vh 3vw;
+          font-size: clamp(12px, 2vw, 16px);
+          color: #163853;
+          background-color: #F5F5F5;
+          border: none;
+          border-radius: 30px;
+          cursor: pointer;
+          font-family: 'IBMPlexArabic-Bold', sans-serif;
+          transition: background-color 0.3s ease, transform 0.2s ease;
+        }
 
-          .services-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* كل صف فيه خدمتين */
-            gap: 60px 10px;
-            justify-items: center;
-          }
+        .order-button:hover {
+          background-color: #e0e0e0;
+          transform: translateY(-2px);
+        }
 
-          .service-box {
-            width: 100%;
-            max-width: 160px;
-            text-align: center;
-          }
+        .order-button:disabled {
+          background-color: #ddd;
+          color: #888;
+          cursor: not-allowed;
+          transform: none;
+        }
 
-          .icon-wrapper {
-            width: 35px;
-            height: 35px;
-          }
+        .order-bar {
+          margin-top: 1vh;
+          background-color: #fff;
+          border-radius: 20px;
+          padding: 1vh 0;
+          width: fit-content;
+          min-width: 60%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
 
-          .circle-bg {
-            width: 15px;
-            height: 15px;
-            left: 13px;
-          }
+        .order-bar-item {
+          font-size: clamp(12px, 2vw, 16px);
+          color: #666666;
+          font-family: 'IBMPlexArabic', sans-serif;
+          margin: 0.5vh 0;
+          padding: 0.5vh 1vw;
+          border-radius: 10px;
+          user-select: none;
+          transition: color 0.3s ease, font-weight 0.3s ease;
+          cursor: pointer;
+        }
 
-          .service-icon {
-            font-size: 25px;
-          }
-
-          .service-label {
-            font-size: 13px;
-             max-width: 140px;
-
-          }
-
-          .service-description {
-            font-size: 12px;
-            line-height: 1.8;
-            max-width: 140px;
-          }
+        .order-bar-item.selected {
+          color: #C49E7D;
+          font-weight: 700;
         }
       `}</style>
     </section>
   );
 }
-
-

@@ -1,129 +1,439 @@
+/*my-website > components > homeSection > Hero.jsx */
+/*import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { useRouter } from "next/router";
+
+
 export default function Hero() {
+    const router = useRouter();
+  const containerVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 2, ease: 'easeOut' },
+    },
+  };
+
+  const textVariants = {
+    hidden: { opacity: 0, scale: 1.2 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 2, ease: 'easeOut' },
+    },
+  };
+
+  const flashVariants = {
+    hidden: { textShadow: '0 0 0 rgba(255,255,255,0)' },
+    visible: {
+      textShadow: [
+        '0 0 8px rgba(255,255,255,0.5)',
+        '0 0 18px rgba(255,255,255,1)',
+        '0 0 8px rgba(255,255,255,0.5)',
+      ],
+      transition: {
+        repeat: Infinity,
+        repeatType: 'loop',
+        duration: 2,
+        ease: 'easeInOut',
+        delay: 2,
+      },
+    },
+  };
+
+  const buttonVariants = {
+    hidden: { scale: 0 },
+    visible: {
+      scale: 1,
+      transition: { duration: 1, ease: 'easeOut' },
+    },
+    hover: {
+      scale: 1.1,
+      transition: { duration: 0.3, ease: 'easeInOut' },
+    },
+  };
+
+  const fullText = "وجهتك الأولى للاستعداد المهني";
+  const [displayedLength, setDisplayedLength] = useState(0);
+  const [blurValue, setBlurValue] = useState(5);
+
+  useEffect(() => {
+    let current = 0;
+
+    const interval = setInterval(() => {
+      current++;
+      if (current > fullText.length) {
+        clearInterval(interval);
+      } else {
+        setDisplayedLength(current);
+        setBlurValue(5 - (5 * current) / fullText.length);
+      }
+    }, 80);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // لتحريك خلفية النص (كأنها مراية تتحرك)
+  const [bgPosX, setBgPosX] = useState(0);
+
+  useEffect(() => {
+    let frame;
+    const animate = () => {
+      setBgPosX((prev) => (prev >= 100 ? 0 : prev + 0.3));
+      frame = requestAnimationFrame(animate);
+    };
+    animate();
+
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
   return (
-    <section className="hero-section">
-      {/* نسخة اللابتوب */}
-      <div className="hero-text desktop">
-        <p className="hero-title">
-          <span className="underline-text">
-            مرحبًا بك في <span className="highlight">متنافس</span>
-          </span>{" "}
-          وجهتك الأولى للاستعداد المهني
+    <motion.section
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      style={{ position: 'relative', width: '100%', height: '100svh', minHeight: '400px' }}
+    >
+      <Image
+        src="/17.jpg"
+        alt="Hero Background"
+        fill
+        style={{ objectFit: 'cover', zIndex: 0 }}
+        priority
+      />
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundColor: 'rgba(0,0,0,0.65)',
+          zIndex: 1,
+        }}
+      />
+
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={{ visible: { transition: { delayChildren: 0 } } }}
+        className="heroContent"
+        style={{
+          position: 'relative',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
+          paddingRight: '10%',
+          paddingLeft: '10%',
+          paddingTop: '40vh',
+          zIndex: 2,
+        }}
+      >
+<motion.h1
+  variants={textVariants}
+  className="heroTitle font-ibmB"
+  style={{
+    position: 'relative',
+    fontSize: 'clamp(2rem, 3vw, 4rem)',
+    userSelect: 'none',
+    color: 'rgba(255, 255, 255, 0.85)', // لون أبيض شفاف واضح
+    // نحتفظ بالانعكاس:
+    backgroundImage: `linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)), url('/17.jpg')`,
+    backgroundSize: 'cover',
+    backgroundPosition: `${bgPosX}% center`,
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text',
+    WebkitTextFillColor: 'transparent', // مهم جداً عشان background-clip يشتغل
+  }}
+>
+  مرحباً بك في{' '}
+  <motion.span
+    variants={flashVariants}
+    initial="hidden"
+    animate="visible"
+    className="heroFlash"
+    style={{
+        paddingTop: '0.2em',
+  paddingBottom: '0.2em',
+      opacity: 0.9,
+      color: 'rgba(255, 255, 255, 0.85)',
+      backgroundImage: `linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)), url('/17.jpg')`,
+      backgroundSize: 'cover',
+      backgroundPosition: `${bgPosX}% center`,
+      WebkitBackgroundClip: 'text',
+      backgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+    }}
+  >
+    متنافس
+  </motion.span>
+</motion.h1>
+
+
+        <p
+          className="heroSubtitle font-ibmB"
+          style={{
+                    paddingTop: '0.2em',
+  paddingBottom: '0.2em',
+            direction: 'rtl',
+            textAlign: 'right',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            width: `${(displayedLength / fullText.length) * 100}%`,
+            transition: 'width 0.08s ease-out',
+            filter: `blur(${blurValue}px)`,
+            opacity: 0.3,
+            transitionProperty: 'width, filter, opacity',
+            transitionDuration: '0.08s',
+            transitionTimingFunction: 'ease-out',
+            color: '#fff',
+            marginTop: '10px',
+            fontSize: 'clamp(1rem, 2vw, 1.5rem)',
+          }}
+        >
+          {fullText}
         </p>
-      </div>
 
-      {/* نسخة الجوال */}
-      <div className="hero-text mobile">
-        <p className="hero-title-mobile">
-          <span className="underline-text-mobile">
-            مرحبًا بك في <span className="highlight">متنافس</span>
-          </span>{" "}
-          وجهتك الأولى للاستعداد المهني
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
+          style={{
+            marginTop: '20vh',
+            display: 'flex',
+            gap: '10px',
+            justifyContent: 'center',
+            width: '100%',
+          }}
+        >
+<motion.button
+  variants={buttonVariants}
+  whileHover="hover"
+  onClick={() => router.push("/login")}
+  style={{
+    backgroundColor: '#C49E7D',
+    color: 'white',
+    border: 'none',
+    borderRadius: '50px',
+    padding: '12px 30px',
+    fontSize: 'clamp(0.8rem, 2.5vw, 1rem)',
+    cursor: 'pointer',
+    fontFamily: 'IBMPlexArabic',
+  }}
+
+>
+  تسجيل الدخول
+</motion.button>
+
+
+        <motion.button
+    variants={buttonVariants}
+    whileHover="hover"
+    style={{
+      backgroundColor: "transparent",
+      color: "#ffffff",
+      border: "clamp(1px, 0.4vw, 2px) solid #C49E7D",
+      borderRadius: "50px",
+      padding: "12px 30px",
+      fontSize: "clamp(0.8rem, 2.5vw, 1rem)",
+      cursor: "pointer",
+      fontFamily: "IBMPlexArabic",
+    }}
+    onClick={() => router.push("/signup")} // التغيير هنا
+  >
+    إنشاء حساب
+  </motion.button>
+        </motion.div>
+      </motion.div>
+    </motion.section>
+  );
+}*/
+/*my-website > components > homeSection > Hero.jsx */
+"use client";
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { useRouter } from "next/router";
+import { auth } from "../../firebase";
+import { onAuthStateChanged } from "firebase/auth";
+
+export default function Hero() {
+  const router = useRouter();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // ✅ حالة التحميل
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false); // انتهى التحميل
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const containerVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 2, ease: 'easeOut' } },
+  };
+
+  const textVariants = {
+    hidden: { opacity: 0, scale: 1.2 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 2, ease: 'easeOut' } },
+  };
+
+  const flashVariants = {
+    hidden: { textShadow: '0 0 0 rgba(255,255,255,0)' },
+    visible: {
+      textShadow: [
+        '0 0 8px rgba(255,255,255,0.5)',
+        '0 0 18px rgba(255,255,255,1)',
+        '0 0 8px rgba(255,255,255,0.5)',
+      ],
+      transition: { repeat: Infinity, repeatType: 'loop', duration: 2, ease: 'easeInOut', delay: 2 },
+    },
+  };
+
+  const buttonVariants = {
+    hidden: { scale: 0 },
+    visible: { scale: 1, transition: { duration: 1, ease: 'easeOut' } },
+    hover: { scale: 1.1, transition: { duration: 0.3, ease: 'easeInOut' } },
+  };
+
+  const fullText = "وجهتك الأولى للاستعداد المهني";
+  const [displayedLength, setDisplayedLength] = useState(0);
+  const [blurValue, setBlurValue] = useState(5);
+
+  useEffect(() => {
+    let current = 0;
+    const interval = setInterval(() => {
+      current++;
+      if (current > fullText.length) clearInterval(interval);
+      else {
+        setDisplayedLength(current);
+        setBlurValue(5 - (5 * current) / fullText.length);
+      }
+    }, 80);
+    return () => clearInterval(interval);
+  }, []);
+
+  const [bgPosX, setBgPosX] = useState(0);
+  useEffect(() => {
+    let frame;
+    const animate = () => {
+      setBgPosX(prev => (prev >= 100 ? 0 : prev + 0.3));
+      frame = requestAnimationFrame(animate);
+    };
+    animate();
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  return (
+    <motion.section
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      style={{ position: 'relative', width: '100%', height: '100svh', minHeight: '400px' }}
+    >
+      <Image src="/17.jpg" alt="Hero Background" fill style={{ objectFit: 'cover', zIndex: 0 }} priority />
+      <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.65)', zIndex: 1 }} />
+
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={{ visible: { transition: { delayChildren: 0 } } }}
+        className="heroContent"
+        style={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', paddingRight: '10%', paddingLeft: '10%', paddingTop: '40vh', zIndex: 2 }}
+      >
+        <motion.h1
+          variants={textVariants}
+          className="heroTitle font-ibmB"
+          style={{
+            position: 'relative',
+            fontSize: 'clamp(2rem, 3vw, 4rem)',
+            userSelect: 'none',
+            color: 'rgba(255, 255, 255, 0.85)',
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)), url('/17.jpg')`,
+            backgroundSize: 'cover',
+            backgroundPosition: `${bgPosX}% center`,
+            WebkitBackgroundClip: 'text',
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
+          مرحباً بك في{' '}
+          <motion.span
+            variants={flashVariants}
+            initial="hidden"
+            animate="visible"
+            className="heroFlash"
+            style={{
+              paddingTop: '0.2em',
+              paddingBottom: '0.2em',
+              opacity: 0.9,
+              color: 'rgba(255, 255, 255, 0.85)',
+              backgroundImage: `linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)), url('/17.jpg')`,
+              backgroundSize: 'cover',
+              backgroundPosition: `${bgPosX}% center`,
+              WebkitBackgroundClip: 'text',
+              backgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
+            متنافس
+          </motion.span>
+        </motion.h1>
+
+        <p
+          className="heroSubtitle font-ibmB"
+          style={{
+            paddingTop: '0.2em',
+            paddingBottom: '0.2em',
+            direction: 'rtl',
+            textAlign: 'right',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            width: `${(displayedLength / fullText.length) * 100}%`,
+            filter: `blur(${blurValue}px)`,
+            opacity: 0.3,
+            transitionProperty: 'width, filter, opacity',
+            transitionDuration: '0.08s',
+            transitionTimingFunction: 'ease-out',
+            color: '#fff',
+            marginTop: '10px',
+            fontSize: 'clamp(1rem, 2vw, 1.5rem)',
+          }}
+        >
+          {fullText}
         </p>
-      </div>
 
-      <style jsx>{`
-        .hero-section {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 700px;
-          background-image: url('/p.jpg');
-          background-size: cover;
-          background-position: center;
-          text-align: center;
-          color: white;
-          direction: rtl;
-          font-family: 'Noto Sans Arabic Light';
-          padding: 0 20px;
-        }
+        {/* ✅ الأزرار تظهر فقط إذا انتهى التحميل والمستخدم غير موجود */}
+        {!loading && !user && (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
+            style={{ marginTop: '20vh', display: 'flex', gap: '10px', justifyContent: 'center', width: '100%' }}
+          >
+            <motion.button
+              variants={buttonVariants}
+              whileHover="hover"
+              onClick={() => router.push("/login")}
+              style={{ backgroundColor: '#C49E7D', color: 'white', border: 'none', borderRadius: '50px', padding: '12px 30px', fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', cursor: 'pointer', fontFamily: 'IBMPlexArabic' }}
+            >
+              تسجيل الدخول
+            </motion.button>
 
-        .hero-text {
-          max-width: 100%;
-        }
-
-        .hero-title {
-          font-size: 24px;
-          font-family: 'Noto Sans Arabic Light';
-          position: relative;
-          line-height: 1.8;
-        }
-
-        .highlight {
-          color: #ffffff;
-          font-family: 'Noto Sans Arabic SemiBold';
-        }
-
-        .underline-text {
-          display: inline-block;
-          position: relative;
-        }
-
-        .underline-text::after {
-          content: "";
-          position: absolute;
-          right: 0;
-          bottom: -6px;
-          height: 4px;
-          width: 100%;
-          background-color: #e46a00;
-          border-radius: 2px;
-        }
-
-        /* نسخة الجوال */
-        .hero-title-mobile {
-          font-size: 18px;
-          margin-bottom: 10px;
-          line-height: 1.6;
-        }
-
-        .underline-text-mobile {
-          display: inline-block;
-          position: relative;
-        }
-
-        .underline-text-mobile::after {
-          content: "";
-          position: absolute;
-          right: 0;
-          bottom: -4px;
-          height: 2px;
-          width: 100%;
-          background-color: #e46a00;
-          border-radius: 2px;
-        }
-
-        /* إظهار وإخفاء */
-        .mobile {
-          display: none;
-        }
-
-        @media (max-width: 640px) {
-          .desktop {
-            display: none;
-          }
-
-          .mobile {
-            display: block;
-          }
-
-          .hero-section {
-            height: 500px;
-            background-position: top;
-            padding: 0 16px;
-          }
-
-          .hero-text {
-            max-width: 95%;
-          }
-
-          .hero-title-mobile {
-            font-size: 16px;
-            font-family: 'Noto Sans Arabic Light';
-          }
-        }
-      `}</style>
-    </section>
+            <motion.button
+              variants={buttonVariants}
+              whileHover="hover"
+              style={{ backgroundColor: "transparent", color: "#ffffff", border: "clamp(1px, 0.4vw, 2px) solid #C49E7D", borderRadius: "50px", padding: "12px 30px", fontSize: "clamp(0.8rem, 2.5vw, 1rem)", cursor: "pointer", fontFamily: "IBMPlexArabic" }}
+              onClick={() => router.push("/signup")}
+            >
+              إنشاء حساب
+            </motion.button>
+          </motion.div>
+        )}
+      </motion.div>
+    </motion.section>
   );
 }
-
-

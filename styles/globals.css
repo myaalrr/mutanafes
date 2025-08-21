@@ -1,98 +1,163 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/*my-website > styles > globals.css*/ 
+@font-face {
+  font-family: 'IBMPlexArabic';
+  src: url('/IBMPlexArabic-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
+@font-face {
+  font-family: 'IBMPlexArabic-Bold';
+  src: url('/IBMPlexArabic-Bold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NotoSansArabicCondensedExtraLight';
+  src: url('/NotoSansArabic_Condensed-ExtraLight.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NotoSansArabicCondensedLight';
+  src: url('/NotoSansArabic_Condensed-Light copy.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NotoSansArabic_SemiCondensed-SemiBold';
+  src: url('/NotoSansArabic_SemiCondensed-SemiBold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Urbanist-Light';
+  src: url('/Urbanist-Light.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+ @font-face {
+  font-family: 'Gloock-Regular';
+  src: url('/Gloock-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* -------------------
+   إعدادات الألوان
+------------------- */
 :root {
-  --background: #F5F5F5;
+  --background: #ffffff;
   --foreground: #171717;
 }
 
+/* -------------------
+   إعدادات أساسية للصفحة
+------------------- */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: 'Urbanist-Light', Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
+  direction: rtl;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.arabic-text-Light {
-  font-family: 'Noto Sans Arabic Light', Tahoma, Arial, sans-serif;
-}
-
-.arabic-text-semiBold {
-  font-family: 'Noto Sans Arabic SemiBold', Tahoma, Arial, sans-serif;
-}
-
-.custom-arabic-light {
-  font-family: 'Noto Sans Arabic Light', Tahoma, Arial, sans-serif;
-  font-weight: 300;
-  font-size: 1.5rem;
-}
-
-.custom-arabic-semibold {
-  font-family: 'Noto Sans Arabic SemiBold', Tahoma, Arial, sans-serif;
-  font-weight: 600;
-  font-size: 1.5rem;
-}
-
-.Urbanist-SemiBold {
-  font-family: 'Urbanist-SemiBold', Tahoma, Arial, sans-serif;
-  font-weight: 600;
-  font-size: 1.5rem;
-}
-
-@font-face {
-  font-family: 'Urbanist-Light';
-  src: url('/Urbanist-Light.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Noto Sans Arabic Light';
-  src: url('/NotoSansArabic_Condensed-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Noto Sans Arabic SemiBold';
-  src: url('/NotoSansArabic_SemiCondensed-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Urbanist-BoldItalic';
-  src: url('/Urbanist-BoldItalic.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Urbanist-SemiBold';
-  src: url('/Urbanist-SemiBold.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-}
-
-/* ✅ إصلاح التمدد الجانبي في الجوال */
-html, body {
+html, body, #__next {
+  height: 100%;
   overflow-x: hidden;
-  width: 100%;
 }
 
-* {
+
+.font-noto-extra-light {
+  font-family: 'NotoSansArabicCondensedExtraLight', sans-serif !important;
+}
+
+.font-ibm {
+  font-family: 'IBMPlexArabic', sans-serif !important;
+}
+.font-ibmB {
+  font-family: 'IBMPlexArabic-Bold', sans-serif !important;
+}
+.font-notoSB {
+  font-family: 'NotoSansArabic_SemiCondensed-SemiBold', sans-serif !important;
+}
+.font-urbanist {
+  font-family: 'Urbanist-Light', sans-serif !important;
+}
+
+.font-GloockR {
+  font-family: 'Gloock-Regular', sans-serif !important;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  user-select: none;
+  text-rendering: optimizeLegibility;
+  direction: rtl;
+  text-align: right;
+  color: white;
+  padding-right: 20%;
+  padding-left: 5%;
+}
+
+.heroTitle {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.heroFlash {
+  display: inline-block;
+  color: white;
+}
+
+.heroSubtitle {
+  font-size: clamp(1.2rem, 2.8vw, 1.6rem);
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  line-height: 1.4;
+  overflow: hidden;
+  white-space: normal;
   box-sizing: border-box;
 }
 
-/* ✅ حماية من العناصر اللي تسبب تجاوز */
-img, div, section, header, nav, footer {
-  max-width: 100%;
-  overflow-x: hidden;
+@media (max-width: 768px) {
+  .heroContent {
+    padding-right: 10%;
+    padding-left: 10%;
+  }
 }
 
-
+@media (max-width: 480px) {
+  .heroContent {
+    padding-right: 5%;
+    padding-left: 5%;
+  }
+}
 
 
 

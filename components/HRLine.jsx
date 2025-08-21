@@ -11,9 +11,10 @@ export default function HRLine({
         margin: `${margin} auto`,
         border: 'none',
         borderTop: `${thickness} solid ${color}`,
-        opacity: opacity,
-        width: width,
+        opacity,
+        width,
       }}
     />
   );
 }
+

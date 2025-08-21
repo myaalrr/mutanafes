@@ -1,108 +1,78 @@
-import { FiFacebook } from "react-icons/fi";
-import { RiTwitterXFill, RiYoutubeLine, RiMapPinLine } from "react-icons/ri";
-import { FaInstagram } from "react-icons/fa";
-import { TbBrandLinkedin } from "react-icons/tb";
+/*my-website > components > Footer.jsx */
 
 export default function Footer() {
   return (
     <>
       <footer
         style={{
-          backgroundColor: '#163853',
-          padding: '10px 20px',
-          overflowX: 'hidden', // منع التمرير الأفقي
+          backgroundColor: '#0D2C54',
+          paddingTop: '40px',
+          paddingBottom: '40px',
+          paddingLeft: '30px',
+          paddingRight: '30px',
+          width: '100vw',
           boxSizing: 'border-box',
+          fontFamily: 'Urbanist-Light, sans-serif',
+          color: '#fff',
+          direction: 'ltr',
+          textAlign: 'left',
+          overflowX: 'hidden',
+          margin: 0,
         }}
       >
         <div
-          className="footer-container"
           style={{
-            maxWidth: '1280px',
-            margin: '0 auto',
             display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'nowrap',
-            gap: '10px',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            gap: '80px',
+            justifyContent: 'flex-start',
+            margin: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
           }}
         >
-          {/* أيقونات التواصل */}
-          <div
-            className="footer-icons"
-            style={{
-              display: 'flex',
-              gap: '15px',
-              flexWrap: 'nowrap',
-              alignItems: 'center',
-            }}
-          >
-            <a href="https://www.facebook.com/people/Mutanafes-Company/pfbid02KX1rzciLoyqN91WeGUMmrGbm3CNmC3N6rbkCmdMfgfEbK8NSAG3VD57HDD3bCCRDl/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-              <FiFacebook className="footer-icon" color="#ffffff" />
-            </a>
-            <a href="https://x.com/Mutanafes" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-              <RiTwitterXFill className="footer-icon" color="#ffffff" />
-            </a>
-            <a href="https://www.instagram.com/mutanafes/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-              <FaInstagram className="footer-icon" color="#ffffff" />
-            </a>
-            <a href="https://www.youtube.com/@Mutanafes" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-              <RiYoutubeLine className="footer-icon" color="#ffffff" />
-            </a>
-            <a href="https://www.linkedin.com/company/mutanafes" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-              <TbBrandLinkedin className="footer-icon" color="#ffffff" />
-            </a>
-            <a href="https://maps.app.goo.gl/j6oUs5cPTibQkLdc8" target="_blank" rel="noopener noreferrer" aria-label="Location">
-              <RiMapPinLine className="footer-icon" color="#ffffff" />
-            </a>
+          {/* SOCIALS */}
+          <div>
+            <h4 style={{ color: '#979797ff', marginBottom: '10px', fontSize: '14px' }}>SOCIALS</h4>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, lineHeight: '2', fontSize: '14px' }}>
+              <li><a href="https://www.instagram.com/Mutanafes/" target="_blank" rel="noopener noreferrer" className="footer-link">INSTAGRAM</a></li>
+              <li><a href="https://www.linkedin.com/company/mutanafes/" target="_blank" rel="noopener noreferrer" className="footer-link">LINKEDIN</a></li>
+              <li><a href="https://x.com/Mutanafes" target="_blank" rel="noopener noreferrer" className="footer-link">X.COM</a></li>
+              <li><a href="https://youtube.com/@mutanafes?si=F7HfEcwcYU9C5Ebs" target="_blank" rel="noopener noreferrer" className="footer-link">YOUTUBE</a></li>
+              <li><a href="https://www.facebook.com/people/Mutanafes-Company/pfbid0FVfFWr8Ah5aYapfCjcZ6NdiazN9491JXy2G7yEFC7EDKS3WhCjhe2uvUFfnzuPYwl/" target="_blank" rel="noopener noreferrer" className="footer-link">FACEBOOK</a></li>
+              <li><a href="https://api.whatsapp.com/send?phone=966570779695" target="_blank" rel="noopener noreferrer" className="footer-link">WHATSAPP</a></li>
+            </ul>
           </div>
 
-          {/* النص */}
-          <div
-            className="footer-text"
-            style={{
-              color: '#fff',
-              fontFamily: "'Noto Sans Arabic SemiBold', sans-serif",
-              fontSize: '14px',
-              whiteSpace: 'nowrap',
-              textAlign: 'center',
-            }}
-          >
-            © 2025 متنافس. جميع الحقوق محفوظة
+          {/* NAVIGATION */}
+          <div>
+            <h4 style={{ color: '#979797ff', marginBottom: '10px', fontSize: '14px' }}>NAVIGATION</h4>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, lineHeight: '2', fontSize: '14px' }}>
+              <li><a href="#hero" className="footer-link">HOME</a></li>
+              <li><a href="#services" className="footer-link">SERVICES</a></li>
+              <li><a href="#about" className="footer-link">ABOUT</a></li>
+              <li><a href="#contact" className="footer-link">CONTACT</a></li>
+            </ul>
           </div>
+        </div>
+
+        {/* الجملة في الأسفل */}
+        <div style={{ marginTop: '30px', textAlign: 'right', fontSize: '14px', color: '#ffffffff',fontFamily: 'IBMPlexArabic' }}>
+          © 2025 متنافس. جميع الحقوق محفوظة
         </div>
       </footer>
 
       <style jsx>{`
-        .footer-icon {
-          font-size: 20px;
-          transition: font-size 0.3s ease;
+        .footer-link {
+          color: #fff;
+          text-decoration: none;
+          transition: all 0.2s ease-in-out;
         }
-
-        @media (max-width: 480px) {
-          .footer-container {
-            flex-direction: row !important;
-            justify-content: center !important;
-            flex-wrap: nowrap !important;
-            gap: 10px;
-          }
-
-          .footer-icons {
-            flex-wrap: nowrap !important;
-            flex: 1;
-            justify-content: center;
-          }
-
-          .footer-icon {
-            font-size: 12px !important;
-          }
-
-          .footer-text {
-            font-size: 10px !important;
-          }
+        .footer-link:hover {
+          text-decoration: underline;
         }
       `}</style>
     </>
   );
 }
-
-
