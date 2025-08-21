@@ -6,7 +6,7 @@ import { getDatabase } from "firebase/database";
 const firebaseConfig = {
   apiKey: "AIzaSyBj0NoTuwdPrN1N4x9qCfdORs6-IfPXFtc",
   authDomain: "mutanafees.firebaseapp.com",
-  databaseURL: "https://mutanafees-default-rtdb.firebaseio.com", // أضفت URL للـ Realtime DB
+  databaseURL: "https://mutanafees-default-rtdb.firebaseio.com", // هذا صحيح
   projectId: "mutanafees",
   storageBucket: "mutanafees.firebasestorage.app",
   messagingSenderId: "177816815443",

@@ -17,7 +17,7 @@ export default function Login() {
 
   const initRecaptcha = () => {
     if (window.recaptchaVerifier) {
-      window.recaptchaVerifier.clear(); // مسح أي reCAPTCHA قديمة
+      window.recaptchaVerifier.clear();
     }
     window.recaptchaVerifier = new RecaptchaVerifier(
       "recaptcha-container",
@@ -43,7 +43,7 @@ export default function Login() {
         return;
       }
 
-      initRecaptcha(); // إعادة تهيئة reCAPTCHA قبل كل محاولة
+      initRecaptcha();
       const confirmationResult = await signInWithPhoneNumber(
         auth,
         formattedPhone,
@@ -132,8 +132,6 @@ export default function Login() {
     </div>
   );
 }
-
-// ... (styles كما هي بدون تغيير)
 
 const containerStyle = {
   maxWidth: 400,

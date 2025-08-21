@@ -49,7 +49,7 @@ export default function Signup() {
         return;
       }
 
-      initRecaptcha(); // إعادة تهيئة reCAPTCHA قبل كل محاولة
+      initRecaptcha();
       const confirmationResult = await signInWithPhoneNumber(
         auth,
         formattedPhone,
@@ -69,8 +69,7 @@ export default function Signup() {
     try {
       const result = await confirmation.confirm(otp);
       const user = result.user;
-      const formattedPhone = user.phoneNumber; // +9665XXXXXXX
-      await set(ref(db, `users/${formattedPhone}/name`), name);
+      await set(ref(db, `users/${user.phoneNumber}/name`), name);
 
       setMessageType("success");
       setMessage(`تم إنشاء الحساب وتسجيل الدخول بنجاح ✅`);
@@ -145,8 +144,6 @@ export default function Signup() {
   );
 }
 
-// ... (styles كما هي بدون تغيير)
-
 const containerStyle = {
   maxWidth: 400,
   margin: "50px auto",
@@ -191,4 +188,3 @@ const linkStyle = {
   padding: 0,
   fontSize: "14px",
 };
-
