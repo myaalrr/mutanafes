@@ -1,22 +1,21 @@
-/*my-website > firebase.js */
 // my-website/firebase.js
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAekJ9CFG9SvtswlKAGVoFOwzVc8NPVGl4",
-  authDomain: "mutanafes0.firebaseapp.com",
-  databaseURL: "https://mutanafes0-default-rtdb.firebaseio.com",
-  projectId: "mutanafes0",
-  storageBucket: "mutanafes0.firebasestorage.app",
-  messagingSenderId: "61299874497",
-  appId: "1:61299874497:web:b4573b422a5fcc7da55240"
+  apiKey: "AIzaSyBj0NoTuwdPrN1N4x9qCfdORs6-IfPXFtc",
+  authDomain: "mutanafees.firebaseapp.com",
+  databaseURL: "https://mutanafees-default-rtdb.firebaseio.com", // أضفت URL للـ Realtime DB
+  projectId: "mutanafees",
+  storageBucket: "mutanafees.firebasestorage.app",
+  messagingSenderId: "177816815443",
+  appId: "1:177816815443:web:1e6ee97a70a83f1d9d03a6",
+  measurementId: "G-TVSF19YJSE"
 };
 
 // تحقق إذا التطبيق موجود مسبقًا قبل التهيئة
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
-// تصدير Auth و Realtime Database
 export const auth = getAuth(app);
 export const db = getDatabase(app);

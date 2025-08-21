@@ -24,7 +24,6 @@ export default function Signup() {
         return;
       }
 
-      // التأكد من رقم الهاتف
       if (!phone.match(/^05\d{8}$/)) {
         setMessageType("error");
         setMessage("يرجى إدخال رقم هاتف صحيح ❌");
@@ -33,7 +32,6 @@ export default function Signup() {
 
       const formattedPhone = "+966" + phone.slice(1);
 
-      // التحقق إذا الحساب موجود مسبقًا
       const snapshot = await get(ref(db, `users/${formattedPhone}/name`));
       if (snapshot.exists()) {
         setAccountExists(true);
@@ -42,7 +40,6 @@ export default function Signup() {
         return;
       }
 
-      // إعداد reCAPTCHA invisible
       if (!window.recaptchaVerifier) {
         window.recaptchaVerifier = new RecaptchaVerifier(
           "recaptcha-container",
@@ -71,7 +68,8 @@ export default function Signup() {
       const result = await confirmation.confirm(otp);
       const user = result.user;
 
-      await set(ref(db, `users/${user.phoneNumber}/name`), name);
+      const formattedPhone = user.phoneNumber; // +9665XXXXXXX
+      await set(ref(db, `users/${formattedPhone}/name`), name);
 
       setMessageType("success");
       setMessage(`تم إنشاء الحساب وتسجيل الدخول بنجاح ✅`);
@@ -146,6 +144,8 @@ export default function Signup() {
     </div>
   );
 }
+
+// ... (styles كما هي بدون تغيير)
 
 const containerStyle = {
   maxWidth: 400,

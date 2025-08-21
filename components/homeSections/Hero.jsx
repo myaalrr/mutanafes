@@ -1,4 +1,4 @@
-/*my-website > components > homeSection > Hero.jsx*/
+// my-website/components/homeSection/Hero.jsx
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
@@ -18,8 +18,6 @@ export default function Hero() {
     });
     return () => unsubscribe();
   }, []);
-
-  // ...variants, animations, text logic كما في السابق
 
   const fullText = "وجهتك الأولى للاستعداد المهني";
   const [displayedLength, setDisplayedLength] = useState(0);
@@ -67,7 +65,7 @@ export default function Hero() {
           </motion.span>
         </motion.h1>
 
-        <p className="heroSubtitle font-ibmB" style={{ paddingTop: '0.2em', paddingBottom: '0.2em', direction: 'rtl', textAlign: 'right', whiteSpace: 'nowrap', overflow: 'hidden', width: `${(displayedLength / fullText.length) * 100}%`, transition: 'width 0.08s ease-out', filter: `blur(${blurValue}px)`, opacity: 0.3, transitionProperty: 'width, filter, opacity', transitionDuration: '0.08s', transitionTimingFunction: 'ease-out', color: '#fff', marginTop: '10px', fontSize: 'clamp(1rem, 2vw, 1.5rem)' }}>
+        <p className="heroSubtitle font-ibmB" style={{ paddingTop: '0.2em', paddingBottom: '0.2em', direction: 'rtl', textAlign: 'right', whiteSpace: 'nowrap', overflow: 'hidden', width: `${(displayedLength / fullText.length) * 100}%`, filter: `blur(${blurValue}px)`, opacity: 0.3, transition: 'width 0.08s ease-out, filter 0.08s ease-out, opacity 0.08s ease-out', color: '#fff', marginTop: '10px', fontSize: 'clamp(1rem, 2vw, 1.5rem)' }}>
           {fullText}
         </p>
 
@@ -86,3 +84,4 @@ export default function Hero() {
     </motion.section>
   );
 }
+

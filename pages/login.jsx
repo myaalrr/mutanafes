@@ -131,6 +131,9 @@ export default function Login() {
   );
 }
 
+// ... (styles كما هي بدون تغيير)
+
+
 const containerStyle = {
   maxWidth: 400,
   margin: "50px auto",
