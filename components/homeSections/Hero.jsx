@@ -1,3 +1,4 @@
+// my-website/components/homeSection/Hero.jsx
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
@@ -56,24 +57,25 @@ export default function Hero() {
       <Image src="/17.jpg" alt="Hero Background" fill style={{ objectFit: 'cover', zIndex: 0 }} priority />
       <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.65)', zIndex: 1 }} />
 
-      <motion.div initial="hidden" animate="visible" variants={{ visible: { transition: { delayChildren: 0 } } }} style={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', paddingRight: '10%', paddingLeft: '10%', paddingTop: '40vh', zIndex: 2 }}>
-        <motion.h1 variants={textVariants} style={{ fontSize: 'clamp(2rem, 3vw, 4rem)', color: 'rgba(255, 255, 255, 0.85)', WebkitTextFillColor: 'transparent', WebkitBackgroundClip: 'text', backgroundImage: `linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)), url('/17.jpg')`, backgroundSize: 'cover', backgroundPosition: `${bgPosX}% center` }}>
+      <motion.div initial="hidden" animate="visible" variants={{ visible: { transition: { delayChildren: 0 } } }} className="heroContent" style={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', paddingRight: '10%', paddingLeft: '10%', paddingTop: '40vh', zIndex: 2 }}>
+        <motion.h1 variants={textVariants} className="heroTitle font-ibmB" style={{ position: 'relative', fontSize: 'clamp(2rem, 3vw, 4rem)', userSelect: 'none', color: 'rgba(255, 255, 255, 0.85)', backgroundImage: `linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)), url('/17.jpg')`, backgroundSize: 'cover', backgroundPosition: `${bgPosX}% center`, WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
           مرحباً بك في{' '}
-          <motion.span variants={flashVariants} initial="hidden" animate="visible" style={{ WebkitTextFillColor: 'transparent', WebkitBackgroundClip: 'text', backgroundImage: `linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)), url('/17.jpg')`, backgroundSize: 'cover', backgroundPosition: `${bgPosX}% center` }}>
+          <motion.span variants={flashVariants} initial="hidden" animate="visible" className="heroFlash" style={{ paddingTop: '0.2em', paddingBottom: '0.2em', opacity: 0.9, color: 'rgba(255, 255, 255, 0.85)', backgroundImage: `linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)), url('/17.jpg')`, backgroundSize: 'cover', backgroundPosition: `${bgPosX}% center`, WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             متنافس
           </motion.span>
         </motion.h1>
 
-        <p style={{ width: `${(displayedLength / fullText.length) * 100}%`, filter: `blur(${blurValue}px)`, color: '#fff', marginTop: '10px', fontSize: 'clamp(1rem, 2vw, 1.5rem)', whiteSpace: 'nowrap', overflow: 'hidden' }}>
+        <p className="heroSubtitle font-ibmB" style={{ paddingTop: '0.2em', paddingBottom: '0.2em', direction: 'rtl', textAlign: 'right', whiteSpace: 'nowrap', overflow: 'hidden', width: `${(displayedLength / fullText.length) * 100}%`, filter: `blur(${blurValue}px)`, opacity: 0.3, transition: 'width 0.08s ease-out, filter 0.08s ease-out, opacity 0.08s ease-out', color: '#fff', marginTop: '10px', fontSize: 'clamp(1rem, 2vw, 1.5rem)' }}>
           {fullText}
         </p>
 
         {!loading && !user && (
           <motion.div initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.2 } } }} style={{ marginTop: '20vh', display: 'flex', gap: '10px', justifyContent: 'center', width: '100%' }}>
-            <motion.button variants={buttonVariants} whileHover="hover" onClick={() => router.push("/login")} style={{ backgroundColor: '#C49E7D', color: 'white', border: 'none', borderRadius: '50px', padding: '12px 30px', fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', cursor: 'pointer' }}>
+            <motion.button variants={buttonVariants} whileHover="hover" onClick={() => router.push("/login")} style={{ backgroundColor: '#C49E7D', color: 'white', border: 'none', borderRadius: '50px', padding: '12px 30px', fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', cursor: 'pointer', fontFamily: 'IBMPlexArabic' }}>
               تسجيل الدخول
             </motion.button>
-            <motion.button variants={buttonVariants} whileHover="hover" onClick={() => router.push("/signup")} style={{ backgroundColor: "transparent", color: "#ffffff", border: "clamp(1px, 0.4vw, 2px) solid #C49E7D", borderRadius: "50px", padding: "12px 30px", fontSize: "clamp(0.8rem, 2.5vw, 1rem)", cursor: "pointer" }}>
+
+            <motion.button variants={buttonVariants} whileHover="hover" style={{ backgroundColor: "transparent", color: "#ffffff", border: "clamp(1px, 0.4vw, 2px) solid #C49E7D", borderRadius: "50px", padding: "12px 30px", fontSize: "clamp(0.8rem, 2.5vw, 1rem)", cursor: "pointer", fontFamily: "IBMPlexArabic" }} onClick={() => router.push("/signup")}>
               إنشاء حساب
             </motion.button>
           </motion.div>
@@ -82,3 +84,4 @@ export default function Hero() {
     </motion.section>
   );
 }
+

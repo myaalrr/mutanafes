@@ -48,36 +48,45 @@ export default function Signup() {
           { size: "invisible" },
           auth
         );
+        console.log("reCAPTCHA initialized");
+      } else {
+        console.log("reCAPTCHA already exists");
       }
 
+      console.log("Sending OTP to:", formattedPhone);
       const confirmationResult = await signInWithPhoneNumber(
         auth,
         formattedPhone,
         window.recaptchaVerifier
       );
+
+      console.log("OTP sent successfully", confirmationResult);
       setConfirmation(confirmationResult);
       setMessageType("success");
       setMessage("تم إرسال رمز التحقق ✅");
+
     } catch (err) {
-      console.error(err);
+      console.error("Error sending OTP:", err);
       setMessageType("error");
-      setMessage("خطأ في إرسال الرمز ❌");
+      setMessage("حدث خطأ في إرسال الرمز. تحقق من الرقم أو الاتصال بالإنترنت");
     }
   };
 
   const verifyOtp = async () => {
     try {
+      console.log("Verifying OTP:", otp);
       const result = await confirmation.confirm(otp);
       const user = result.user;
 
       await set(ref(db, `users/${user.phoneNumber}/name`), name);
 
+      console.log("User signed up:", user.phoneNumber);
       setMessageType("success");
       setMessage("تم إنشاء الحساب وتسجيل الدخول بنجاح ✅");
 
       setTimeout(() => router.push("/"), 1500);
     } catch (err) {
-      console.error(err);
+      console.error("Error verifying OTP:", err);
       setMessageType("error");
       setMessage("رمز التحقق غير صحيح ❌");
     }
