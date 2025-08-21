@@ -13,17 +13,12 @@ export default function Login() {
   const [confirmation, setConfirmation] = useState(null);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("info");
-  const [accountNotFound, setAccountNotFound] = useState(false);
 
   const sendOtp = async () => {
     try {
-      const formattedPhone = phone.startsWith("0") ? "+966" + phone.slice(1) : "+966" + phone;
-
-      // تحقق من وجود الحساب مسبقًا
-      const snapshot = await get(ref(db, `users/${formattedPhone}/name`));
-      if (!snapshot.exists()) {
-        setAccountNotFound(true);
-        setMessage("");
+      if (!phone) {
+        setMessageType("error");
+        setMessage("يرجى إدخال الرقم ❌");
         return;
       }
 
@@ -35,11 +30,19 @@ export default function Login() {
         );
       }
 
+      const formattedPhone = phone.startsWith("0") ? "+966" + phone.slice(1) : "+966" + phone;
+
+      const snapshot = await get(ref(db, `users/${formattedPhone}/name`));
+      if (!snapshot.exists()) {
+        setMessageType("error");
+        setMessage("الحساب غير موجود ❌");
+        return;
+      }
+
       const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, window.recaptchaVerifier);
       setConfirmation(confirmationResult);
       setMessageType("success");
       setMessage("تم إرسال رمز التحقق ✅");
-      setAccountNotFound(false);
     } catch (err) {
       console.error(err);
       setMessageType("error");
@@ -83,12 +86,6 @@ export default function Login() {
 
       {message && <p style={{ ...messageStyle, color: messageType === "success" ? "#637e64ff" : "#C49E7D" }}>{message}</p>}
 
-      {accountNotFound && (
-        <div style={noticeStyle}>
-          الحساب غير موجود، <button style={linkStyle} onClick={() => router.push("/signup")}>أنشئ حسابك من هنا</button>
-        </div>
-      )}
-
       <div id="recaptcha-container"></div>
     </div>
   );
@@ -98,6 +95,3 @@ const containerStyle = { maxWidth: 400, margin: "50px auto", padding: 20, fontFa
 const titleStyle = { textAlign: "center", marginBottom: 20 };
 const inputStyle = { padding: "12px", marginBottom: "12px", borderRadius: "8px", border: "1px solid #f5f5f5", fontSize: "16px", width: "100%", boxSizing: "border-box" };
 const buttonStyle = { backgroundColor: "#C49E7D", color: "white", border: "none", borderRadius: "8px", padding: "12px", fontSize: "16px", cursor: "pointer", width: "100%" };
-const messageStyle = { fontSize: "14px", marginTop: "10px" };
-const noticeStyle = { marginTop: "15px", padding: "10px", backgroundColor: "#f5f5f5", borderRadius: "8px", textAlign: "center", fontSize: "14px" };
-const linkStyle = { background: "none", border: "none", color: "#C49E7D", cursor: "pointer", textDecoration: "underline", padding: 0, fontSize: "14px" };

@@ -14,17 +14,15 @@ export default function Signup() {
   const [confirmation, setConfirmation] = useState(null);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("info");
-  const [accountExists, setAccountExists] = useState(false);
 
   const sendOtp = async () => {
     try {
-      if (!name) {
+      if (!name || !phone) {
         setMessageType("error");
-        setMessage("يرجى إدخال الاسم ❌");
+        setMessage("يرجى إدخال الاسم والرقم ❌");
         return;
       }
 
-      // إعداد reCAPTCHA مرة واحدة
       if (!window.recaptchaVerifier) {
         window.recaptchaVerifier = new RecaptchaVerifier(
           "recaptcha-container",
@@ -38,9 +36,8 @@ export default function Signup() {
       // تحقق إذا الحساب موجود مسبقًا
       const snapshot = await get(ref(db, `users/${formattedPhone}/name`));
       if (snapshot.exists()) {
-        setAccountExists(true);
-        setMessageType("info");
-        setMessage("الحساب موجود مسبقًا، سجل دخولك من صفحة الدخول");
+        setMessageType("error");
+        setMessage("الحساب موجود مسبقًا، يرجى تسجيل الدخول ❌");
         return;
       }
 
@@ -60,7 +57,6 @@ export default function Signup() {
       const result = await confirmation.confirm(otp);
       const user = result.user;
 
-      // حفظ الاسم في Realtime Database
       await set(ref(db, `users/${user.phoneNumber}/name`), name);
 
       setMessageType("success");
@@ -92,12 +88,6 @@ export default function Signup() {
 
       {message && <p style={{ ...messageStyle, color: messageType === "success" ? "#637e64ff" : "#C49E7D" }}>{message}</p>}
 
-      {accountExists && (
-        <div style={noticeStyle}>
-          الحساب موجود مسبقًا، <button style={linkStyle} onClick={() => router.push("/login")}>سجل دخولك من هنا</button>
-        </div>
-      )}
-
       <div id="recaptcha-container"></div>
     </div>
   );
@@ -108,5 +98,3 @@ const titleStyle = { textAlign: "center", marginBottom: 20 };
 const inputStyle = { padding: "12px", marginBottom: "12px", borderRadius: "8px", border: "1px solid #f5f5f5", fontSize: "16px", width: "100%", boxSizing: "border-box" };
 const buttonStyle = { backgroundColor: "#C49E7D", color: "white", border: "none", borderRadius: "8px", padding: "12px", fontSize: "16px", cursor: "pointer", width: "100%" };
 const messageStyle = { fontSize: "14px", marginTop: "10px" };
-const noticeStyle = { marginTop: "15px", padding: "10px", backgroundColor: "#f5f5f5", borderRadius: "8px", textAlign: "center", fontSize: "14px" };
-const linkStyle = { background: "none", border: "none", color: "#C49E7D", cursor: "pointer", textDecoration: "underline", padding: 0, fontSize: "14px" };
