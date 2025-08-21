@@ -17,9 +17,7 @@ export default function Signup() {
   const [accountExists, setAccountExists] = useState(false);
 
   const initRecaptcha = () => {
-    if (window.recaptchaVerifier) {
-      window.recaptchaVerifier.clear();
-    }
+    if (window.recaptchaVerifier) window.recaptchaVerifier.clear();
     window.recaptchaVerifier = new RecaptchaVerifier(
       "recaptcha-container",
       { size: "invisible" },
@@ -34,6 +32,7 @@ export default function Signup() {
         setMessage("يرجى إدخال الاسم ❌");
         return;
       }
+
       if (!phone.match(/^05\d{8}$/)) {
         setMessageType("error");
         setMessage("يرجى إدخال رقم هاتف صحيح ❌");
@@ -41,6 +40,7 @@ export default function Signup() {
       }
 
       const formattedPhone = "+966" + phone.slice(1);
+
       const snapshot = await get(ref(db, `users/${formattedPhone}/name`));
       if (snapshot.exists()) {
         setAccountExists(true);
@@ -50,6 +50,7 @@ export default function Signup() {
       }
 
       initRecaptcha();
+
       const confirmationResult = await signInWithPhoneNumber(
         auth,
         formattedPhone,
@@ -69,10 +70,12 @@ export default function Signup() {
     try {
       const result = await confirmation.confirm(otp);
       const user = result.user;
+
       await set(ref(db, `users/${user.phoneNumber}/name`), name);
 
       setMessageType("success");
       setMessage(`تم إنشاء الحساب وتسجيل الدخول بنجاح ✅`);
+
       setTimeout(() => router.push("/"), 1500);
     } catch (err) {
       console.error(err);
@@ -84,7 +87,6 @@ export default function Signup() {
   return (
     <div style={containerStyle}>
       <h2 style={titleStyle}>إنشاء حساب</h2>
-
       <input
         type="text"
         placeholder="الاسم الكامل"
@@ -144,47 +146,12 @@ export default function Signup() {
   );
 }
 
-const containerStyle = {
-  maxWidth: 400,
-  margin: "50px auto",
-  padding: 20,
-  fontFamily: "IBMPlexArabic",
-};
+// --- نفس الستايلات اللي عندك سابقًا ---
+const containerStyle = { maxWidth: 400, margin: "50px auto", padding: 20, fontFamily: "IBMPlexArabic" };
 const titleStyle = { textAlign: "center", marginBottom: 20 };
-const inputStyle = {
-  padding: "12px",
-  marginBottom: "12px",
-  borderRadius: "8px",
-  border: "1px solid #f5f5f5",
-  fontSize: "16px",
-  width: "100%",
-  boxSizing: "border-box",
-};
-const buttonStyle = {
-  backgroundColor: "#C49E7D",
-  color: "white",
-  border: "none",
-  borderRadius: "8px",
-  padding: "12px",
-  fontSize: "16px",
-  cursor: "pointer",
-  width: "100%",
-};
+const inputStyle = { padding: "12px", marginBottom: "12px", borderRadius: "8px", border: "1px solid #f5f5f5", fontSize: "16px", width: "100%", boxSizing: "border-box" };
+const buttonStyle = { backgroundColor: "#C49E7D", color: "white", border: "none", borderRadius: "8px", padding: "12px", fontSize: "16px", cursor: "pointer", width: "100%" };
 const messageStyle = { fontSize: "14px", marginTop: "10px" };
-const noticeStyle = {
-  marginTop: "15px",
-  padding: "10px",
-  backgroundColor: "#f5f5f5",
-  borderRadius: "8px",
-  textAlign: "center",
-  fontSize: "14px",
-};
-const linkStyle = {
-  background: "none",
-  border: "none",
-  color: "#C49E7D",
-  cursor: "pointer",
-  textDecoration: "underline",
-  padding: 0,
-  fontSize: "14px",
-};
+const noticeStyle = { marginTop: "15px", padding: "10px", backgroundColor: "#f5f5f5", borderRadius: "8px", textAlign: "center", fontSize: "14px" };
+const linkStyle = { background: "none", border: "none", color: "#C49E7D", cursor: "pointer", textDecoration: "underline", padding: 0, fontSize: "14px" };
+

@@ -6,7 +6,7 @@ import { getDatabase } from "firebase/database";
 const firebaseConfig = {
   apiKey: "AIzaSyBj0NoTuwdPrN1N4x9qCfdORs6-IfPXFtc",
   authDomain: "mutanafees.firebaseapp.com",
-  databaseURL: "https://mutanafees-default-rtdb.firebaseio.com", // هذا صحيح
+  databaseURL: "https://mutanafees-default-rtdb.firebaseio.com",
   projectId: "mutanafees",
   storageBucket: "mutanafees.firebasestorage.app",
   messagingSenderId: "177816815443",
@@ -14,7 +14,6 @@ const firebaseConfig = {
   measurementId: "G-TVSF19YJSE"
 };
 
-// تحقق إذا التطبيق موجود مسبقًا قبل التهيئة
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 export const auth = getAuth(app);
