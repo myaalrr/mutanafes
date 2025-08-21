@@ -1,6 +1,6 @@
-// my-website/firebase.js
+د// my-website/firebase.js
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, RecaptchaVerifier } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
@@ -14,7 +14,12 @@ const firebaseConfig = {
   measurementId: "G-TVSF19YJSE"
 };
 
+// ✅ تهيئة التطبيق لمرة واحدة فقط
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
+// ✅ خدمات Firebase
 export const auth = getAuth(app);
 export const db = getDatabase(app);
+
+// ✅ نحتاج RecaptchaVerifier في signup/login
+export { RecaptchaVerifier };

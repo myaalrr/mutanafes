@@ -1,8 +1,8 @@
 /*my-website > pages > signup.jsx */
 "use client";
 import { useState } from "react";
-import { auth, db } from "../firebase";
-import { signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
+import { auth, db, RecaptchaVerifier } from "../firebase";
+import { signInWithPhoneNumber } from "firebase/auth";
 import { ref, get, set } from "firebase/database";
 import { useRouter } from "next/navigation";
 
@@ -48,19 +48,15 @@ export default function Signup() {
           { size: "invisible" },
           auth
         );
-        console.log("reCAPTCHA initialized");
-      } else {
-        console.log("reCAPTCHA already exists");
       }
 
-      console.log("Sending OTP to:", formattedPhone);
+      // إرسال OTP
       const confirmationResult = await signInWithPhoneNumber(
         auth,
         formattedPhone,
         window.recaptchaVerifier
       );
 
-      console.log("OTP sent successfully", confirmationResult);
       setConfirmation(confirmationResult);
       setMessageType("success");
       setMessage("تم إرسال رمز التحقق ✅");
@@ -74,13 +70,11 @@ export default function Signup() {
 
   const verifyOtp = async () => {
     try {
-      console.log("Verifying OTP:", otp);
       const result = await confirmation.confirm(otp);
       const user = result.user;
 
       await set(ref(db, `users/${user.phoneNumber}/name`), name);
 
-      console.log("User signed up:", user.phoneNumber);
       setMessageType("success");
       setMessage("تم إنشاء الحساب وتسجيل الدخول بنجاح ✅");
 
@@ -124,6 +118,7 @@ export default function Signup() {
   );
 }
 
+// 🎨 تنسيقات
 const containerStyle = { maxWidth: 400, margin: "50px auto", padding: 20, fontFamily: "IBMPlexArabic" };
 const titleStyle = { textAlign: "center", marginBottom: 20 };
 const inputStyle = { padding: "12px", marginBottom: "12px", borderRadius: "8px", border: "1px solid #f5f5f5", fontSize: "16px", width: "100%", boxSizing: "border-box" };
