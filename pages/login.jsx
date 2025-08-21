@@ -1,3 +1,4 @@
+/*my-website > pages > login.jsx */
 "use client";
 import { useState } from "react";
 import { auth, db } from "../firebase";
@@ -12,21 +13,14 @@ export default function Login() {
   const [confirmation, setConfirmation] = useState(null);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("info");
-  const [name, setName] = useState("");
   const [accountNotFound, setAccountNotFound] = useState(false);
 
   const sendOtp = async () => {
     try {
-      // الرقم التجريبي
-      if (phone === "0500000000") {
-        setConfirmation({ confirm: (code) => code === "123456" ? Promise.resolve({ user: { uid: "demoUser" } }) : Promise.reject() });
-        setMessageType("success");
-        setMessage("تم إرسال الرمز التجريبي ✅");
-        return;
-      }
+      const formattedPhone = phone.startsWith("0") ? "+966" + phone.slice(1) : "+966" + phone;
 
       // تحقق من وجود الحساب مسبقًا
-      const snapshot = await get(ref(db, `users/${phone.startsWith("0") ? "+966" + phone.slice(1) : "+966" + phone}/name`));
+      const snapshot = await get(ref(db, `users/${formattedPhone}/name`));
       if (!snapshot.exists()) {
         setAccountNotFound(true);
         setMessage("");
@@ -34,10 +28,13 @@ export default function Login() {
       }
 
       if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", { size: "invisible" }, auth);
+        window.recaptchaVerifier = new RecaptchaVerifier(
+          "recaptcha-container",
+          { size: "invisible" },
+          auth
+        );
       }
 
-      const formattedPhone = phone.startsWith("0") ? "+966" + phone.slice(1) : "+966" + phone;
       const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, window.recaptchaVerifier);
       setConfirmation(confirmationResult);
       setMessageType("success");
@@ -53,14 +50,13 @@ export default function Login() {
   const verifyOtp = async () => {
     try {
       const result = await confirmation.confirm(otp);
-      const user = result.user || { uid: "demoUser" };
+      const user = result.user;
 
-      // جلب الاسم من قاعدة البيانات
-      const snapshot = await get(ref(db, `users/${user.uid}/name`));
-      setName(snapshot.exists() ? snapshot.val() : "مستخدم");
+      const snapshot = await get(ref(db, `users/${user.phoneNumber}/name`));
+      const name = snapshot.exists() ? snapshot.val() : "مستخدم";
 
       setMessageType("success");
-      setMessage(`مرحباً ${snapshot.val()}, تم تسجيل الدخول بنجاح ✅`);
+      setMessage(`مرحباً ${name}, تم تسجيل الدخول بنجاح ✅`);
 
       setTimeout(() => router.push("/"), 1500);
     } catch (err) {
@@ -87,7 +83,6 @@ export default function Login() {
 
       {message && <p style={{ ...messageStyle, color: messageType === "success" ? "#637e64ff" : "#C49E7D" }}>{message}</p>}
 
-      {/* إشعار الحساب غير موجود */}
       {accountNotFound && (
         <div style={noticeStyle}>
           الحساب غير موجود، <button style={linkStyle} onClick={() => router.push("/signup")}>أنشئ حسابك من هنا</button>

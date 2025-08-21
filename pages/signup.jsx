@@ -1,3 +1,4 @@
+/*my-website > pages > signup.jsx */
 "use client";
 import { useState } from "react";
 import { auth, db } from "../firebase";
@@ -23,25 +24,13 @@ export default function Signup() {
         return;
       }
 
-      // الرقم التجريبي
-      if (phone === "0500000000") {
-        // تحقق إذا الاسم موجود مسبقًا
-        const snapshot = await get(ref(db, `users/demoUser/name`));
-        if (snapshot.exists()) {
-          setAccountExists(true);
-          setMessageType("info");
-          setMessage("");
-          return;
-        }
-
-        setConfirmation({ confirm: (code) => code === "123456" ? Promise.resolve({ user: { uid: "demoUser", phoneNumber: phone } }) : Promise.reject() });
-        setMessageType("success");
-        setMessage("تم إرسال الرمز التجريبي ✅");
-        return;
-      }
-
+      // إعداد reCAPTCHA مرة واحدة
       if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", { size: "invisible" }, auth);
+        window.recaptchaVerifier = new RecaptchaVerifier(
+          "recaptcha-container",
+          { size: "invisible" },
+          auth
+        );
       }
 
       const formattedPhone = phone.startsWith("0") ? "+966" + phone.slice(1) : "+966" + phone;
@@ -51,7 +40,7 @@ export default function Signup() {
       if (snapshot.exists()) {
         setAccountExists(true);
         setMessageType("info");
-        setMessage("");
+        setMessage("الحساب موجود مسبقًا، سجل دخولك من صفحة الدخول");
         return;
       }
 
@@ -69,10 +58,10 @@ export default function Signup() {
   const verifyOtp = async () => {
     try {
       const result = await confirmation.confirm(otp);
-      const user = result.user || { uid: "demoUser" };
+      const user = result.user;
 
       // حفظ الاسم في Realtime Database
-      await set(ref(db, `users/${user.uid}/name`), name);
+      await set(ref(db, `users/${user.phoneNumber}/name`), name);
 
       setMessageType("success");
       setMessage(`تم إنشاء الحساب وتسجيل الدخول بنجاح ✅`);
@@ -103,7 +92,6 @@ export default function Signup() {
 
       {message && <p style={{ ...messageStyle, color: messageType === "success" ? "#637e64ff" : "#C49E7D" }}>{message}</p>}
 
-      {/* إشعار الحساب موجود مسبقًا */}
       {accountExists && (
         <div style={noticeStyle}>
           الحساب موجود مسبقًا، <button style={linkStyle} onClick={() => router.push("/login")}>سجل دخولك من هنا</button>
