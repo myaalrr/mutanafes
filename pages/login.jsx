@@ -15,6 +15,17 @@ export default function Login() {
   const [messageType, setMessageType] = useState("info");
   const [accountNotFound, setAccountNotFound] = useState(false);
 
+  const initRecaptcha = () => {
+    if (window.recaptchaVerifier) {
+      window.recaptchaVerifier.clear(); // مسح أي reCAPTCHA قديمة
+    }
+    window.recaptchaVerifier = new RecaptchaVerifier(
+      "recaptcha-container",
+      { size: "invisible" },
+      auth
+    );
+  };
+
   const sendOtp = async () => {
     try {
       if (!phone.match(/^05\d{8}$/)) {
@@ -24,22 +35,15 @@ export default function Login() {
       }
 
       const formattedPhone = "+966" + phone.slice(1);
-
       const snapshot = await get(ref(db, `users/${formattedPhone}/name`));
+
       if (!snapshot.exists()) {
         setAccountNotFound(true);
         setMessage("");
         return;
       }
 
-      if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new RecaptchaVerifier(
-          "recaptcha-container",
-          { size: "invisible" },
-          auth
-        );
-      }
-
+      initRecaptcha(); // إعادة تهيئة reCAPTCHA قبل كل محاولة
       const confirmationResult = await signInWithPhoneNumber(
         auth,
         formattedPhone,
@@ -60,13 +64,11 @@ export default function Login() {
     try {
       const result = await confirmation.confirm(otp);
       const user = result.user;
-
       const snapshot = await get(ref(db, `users/${user.phoneNumber}/name`));
       const userName = snapshot.exists() ? snapshot.val() : "مستخدم";
 
       setMessageType("success");
       setMessage(`مرحباً ${userName}, تم تسجيل الدخول بنجاح ✅`);
-
       setTimeout(() => router.push("/"), 1500);
     } catch (err) {
       console.error(err);
@@ -132,7 +134,6 @@ export default function Login() {
 }
 
 // ... (styles كما هي بدون تغيير)
-
 
 const containerStyle = {
   maxWidth: 400,

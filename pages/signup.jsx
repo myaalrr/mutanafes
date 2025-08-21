@@ -16,6 +16,17 @@ export default function Signup() {
   const [messageType, setMessageType] = useState("info");
   const [accountExists, setAccountExists] = useState(false);
 
+  const initRecaptcha = () => {
+    if (window.recaptchaVerifier) {
+      window.recaptchaVerifier.clear();
+    }
+    window.recaptchaVerifier = new RecaptchaVerifier(
+      "recaptcha-container",
+      { size: "invisible" },
+      auth
+    );
+  };
+
   const sendOtp = async () => {
     try {
       if (!name) {
@@ -23,7 +34,6 @@ export default function Signup() {
         setMessage("يرجى إدخال الاسم ❌");
         return;
       }
-
       if (!phone.match(/^05\d{8}$/)) {
         setMessageType("error");
         setMessage("يرجى إدخال رقم هاتف صحيح ❌");
@@ -31,7 +41,6 @@ export default function Signup() {
       }
 
       const formattedPhone = "+966" + phone.slice(1);
-
       const snapshot = await get(ref(db, `users/${formattedPhone}/name`));
       if (snapshot.exists()) {
         setAccountExists(true);
@@ -40,14 +49,7 @@ export default function Signup() {
         return;
       }
 
-      if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new RecaptchaVerifier(
-          "recaptcha-container",
-          { size: "invisible" },
-          auth
-        );
-      }
-
+      initRecaptcha(); // إعادة تهيئة reCAPTCHA قبل كل محاولة
       const confirmationResult = await signInWithPhoneNumber(
         auth,
         formattedPhone,
@@ -67,13 +69,11 @@ export default function Signup() {
     try {
       const result = await confirmation.confirm(otp);
       const user = result.user;
-
       const formattedPhone = user.phoneNumber; // +9665XXXXXXX
       await set(ref(db, `users/${formattedPhone}/name`), name);
 
       setMessageType("success");
       setMessage(`تم إنشاء الحساب وتسجيل الدخول بنجاح ✅`);
-
       setTimeout(() => router.push("/"), 1500);
     } catch (err) {
       console.error(err);
