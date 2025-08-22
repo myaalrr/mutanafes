@@ -32,13 +32,19 @@ export default function Login() {
         return;
       }
 
-      if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new RecaptchaVerifier(
-          "recaptcha-container",
-          { size: "invisible" },
-          auth
-        );
+  if (!window.recaptchaVerifier) {
+  window.recaptchaVerifier = new RecaptchaVerifier(
+    "recaptcha-container",
+    {
+      size: "invisible",
+      callback: (response) => {
+        console.log("reCAPTCHA verified:", response);
       }
+    },
+    auth
+  );
+}
+
 
       const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, window.recaptchaVerifier);
       setConfirmation(confirmationResult);

@@ -42,13 +42,18 @@ export default function Signup() {
       }
 
       // تهيئة reCAPTCHA invisible
-      if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new RecaptchaVerifier(
-          "recaptcha-container",
-          { size: "invisible" },
-          auth
-        );
+    if (!window.recaptchaVerifier) {
+  window.recaptchaVerifier = new RecaptchaVerifier(
+    "recaptcha-container",
+    {
+      size: "invisible",
+      callback: (response) => {
+        console.log("reCAPTCHA verified:", response);
       }
+    },
+    auth
+  );
+}
 
       // إرسال OTP
       const confirmationResult = await signInWithPhoneNumber(
