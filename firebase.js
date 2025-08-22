@@ -1,4 +1,4 @@
-د// my-website/firebase.js
+// my-website/firebase.js
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, RecaptchaVerifier } from "firebase/auth";
 import { getDatabase } from "firebase/database";
