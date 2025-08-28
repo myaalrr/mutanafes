@@ -1,4 +1,3 @@
-// pages/signup.js
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { isValidEmail, normalizeEmail } from "../lib/email";
@@ -7,14 +6,15 @@ export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
-  const [step, setStep] = useState(1); 
+  const [step, setStep] = useState(1);
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const parseJsonSafe = async (res) => {
     const text = await res.text();
-    try { return JSON.parse(text); } catch { return { message: text || "خطأ غير متوقع من الخادم" }; }
+    try { return JSON.parse(text); }
+    catch { return { message: text || "خطأ غير متوقع من الخادم" }; }
   };
 
   const handleSendCode = async () => {
@@ -51,14 +51,16 @@ export default function Signup() {
       const data = await parseJsonSafe(res);
       if (!res.ok) throw new Error(data.message || "الرمز غير صحيح");
 
-      const isAdmin = !!data.isAdmin;
+      // نخزن الحالة
       localStorage.setItem("logged_in", "1");
       localStorage.setItem("user_name", name || data.name || "");
       localStorage.setItem("user_email", clean);
-      localStorage.setItem("is_admin", isAdmin ? "1" : "0");
+      if (typeof data.isAdmin !== "undefined") {
+        localStorage.setItem("is_admin", data.isAdmin ? "1" : "0");
+      }
 
-      const dest = isAdmin ? "/admin/review" : "/dashboard";
-      router.replace(dest);
+      // للصفحة الرئيسية فقط
+      router.replace("/");
     } catch (err) {
       setMsg(err.message || "حدث خطأ أثناء التحقق من الرمز");
     } finally {

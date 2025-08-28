@@ -1,4 +1,3 @@
-// pages/login.js
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { isValidEmail, normalizeEmail } from "../lib/email";
@@ -49,14 +48,16 @@ export default function Login() {
       const data = await parseJsonSafe(res);
       if (!res.ok) throw new Error(data.message || "الرمز غير صحيح");
 
-      const isAdmin = !!data.isAdmin;
+      // خزّني الحالة (لو كنتِ تضيفين isAdmin، ما يأثر على التوجيه)
       localStorage.setItem("logged_in", "1");
       localStorage.setItem("user_name", data.name || "");
       localStorage.setItem("user_email", clean);
-      localStorage.setItem("is_admin", isAdmin ? "1" : "0");
+      if (typeof data.isAdmin !== "undefined") {
+        localStorage.setItem("is_admin", data.isAdmin ? "1" : "0");
+      }
 
-      const dest = isAdmin ? "/admin/review" : "/dashboard";
-      router.replace(dest);
+      // التوجيه للصفحة الرئيسية فقط
+      router.replace("/");
     } catch (err) {
       setMsg(err.message || "حدث خطأ أثناء التحقق من الرمز");
     } finally {

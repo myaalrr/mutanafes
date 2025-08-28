@@ -13,6 +13,14 @@ function labelFromKey(key) {
   return m[key] || key;
 }
 
+function safeUserEmail() {
+  try {
+    return (localStorage.getItem("user_email") || "").trim().toLowerCase();
+  } catch {
+    return "";
+  }
+}
+
 export default function AdminReview() {
   const [status, setStatus] = useState("قيد المراجعة");
   const [items, setItems] = useState([]);
@@ -33,7 +41,7 @@ export default function AdminReview() {
     setLoading(true);
     setMsg("");
     try {
-      const email = localStorage.getItem("user_email");
+      const email = safeUserEmail();
       if (!email) {
         setMsg("يرجى تسجيل الدخول أولاً.");
         setLoading(false);
@@ -42,6 +50,7 @@ export default function AdminReview() {
 
       const res = await fetch(`/api/quiz/admin-list?status=${encodeURIComponent(status)}`, {
         headers: { "x-user-email": email },
+        cache: "no-store",
       });
       const data = await res.json();
       if (!res.ok) {
@@ -60,7 +69,7 @@ export default function AdminReview() {
     setLoading(true);
     setMsg("");
     try {
-      const email = localStorage.getItem("user_email");
+      const email = safeUserEmail();
       if (!email) {
         setMsg("يرجى تسجيل الدخول أولاً.");
         setLoading(false);
@@ -120,7 +129,6 @@ export default function AdminReview() {
               {it.supervisor_name ? ` • المشرف: ${it.supervisor_name}${it.supervisor_number ? " ("+it.supervisor_number+")" : ""}` : ""}
             </div>
 
-            {/* عرض الأسئلة النصّية الموحّدة (مطابقة لصفحة my-services.jsx) */}
             <div style={{marginTop:10}}>
               <b>الأسئلة والإجابات:</b>
               <div style={styles.qaGrid}>
@@ -226,3 +234,4 @@ const styles = {
   qTitle: { fontWeight:600, color:"#163853" },
   aText: { color:"#333", whiteSpace:"pre-wrap" },
 };
+
