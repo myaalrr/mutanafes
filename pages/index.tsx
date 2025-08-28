@@ -1,5 +1,4 @@
-/*my-website > pages >index.tsx*/ 
-
+// pages/index.tsx
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Counters from '../components/homeSections/Counters';
@@ -9,6 +8,11 @@ import Services from '../components/homeSections/Services';
 import Contact from '../components/homeSections/Contact';
 import Why from '../components/homeSections/Why';
 import Logos from '../components/homeSections/Logos';
+
+export async function getServerSideProps() {
+  // نخلي الصفحة تتولد وقت الطلب بدل وقت الـ build
+  return { props: {} };
+}
 
 export default function Home() {
   return (
@@ -24,7 +28,6 @@ export default function Home() {
         </section>
 
         <Counters />
-
         <Why />
 
         <section id="services">
@@ -37,7 +40,6 @@ export default function Home() {
           <Contact />
         </section>
       </main>
-
       <Footer />
     </>
   );

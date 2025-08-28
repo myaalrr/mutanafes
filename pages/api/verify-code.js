@@ -1,6 +1,7 @@
 // pages/api/verify-code.js
 import { supabase } from "../../lib/supabase";
 import { isValidEmail, normalizeEmail } from "../../lib/email";
+import { isAdminEmail } from "../../lib/admins";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -8,11 +9,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    // نقرأ الجسم مباشرة (Next يتكفل بالـ JSON parsing في الديف والإنتاج)
     let { email, code } = req.body || {};
     email = normalizeEmail(email);
 
-    // فحوصات سريعة
     if (!isValidEmail(email)) {
       return res.status(400).json({ message: "صيغة البريد الإلكتروني غير صحيحة" });
     }
@@ -20,10 +19,6 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "الرمز مطلوب" });
     }
 
-    // لوج تشخيص (يظهر في التيرمنال)
-    console.log("[verify-code] input:", { email, code });
-
-    // نتحقق من المستخدم + الرمز
     const { data: user, error: selErr } = await supabase
       .from("users")
       .select("id,email,name,temp_code")
@@ -35,32 +30,27 @@ export default async function handler(req, res) {
       console.error("[verify-code] Supabase select error:", selErr);
       return res.status(500).json({ message: "خطأ في التحقق من البيانات" });
     }
-
     if (!user) {
-      // إما الرمز خطأ أو المستخدم غير موجود
       return res.status(400).json({ message: "الرمز غير صحيح" });
     }
 
-    // (اختياري) تصفير الرمز بعد الاستخدام
     const { error: clearErr } = await supabase
       .from("users")
       .update({ temp_code: null })
       .eq("id", user.id);
+    if (clearErr) console.warn("[verify-code] Failed to clear temp_code:", clearErr);
 
-    if (clearErr) {
-      console.warn("[verify-code] Failed to clear temp_code:", clearErr);
-      // نكمل تسجيل الدخول حتى لو فشل التصفير
-    }
-
-    console.log("[verify-code] success for:", email);
+    const isAdmin = isAdminEmail(user.email);
+    console.log("[verify-code] user:", user.email, "isAdmin:", isAdmin);
 
     return res.status(200).json({
       message: "تم تسجيلك بنجاح",
       name: user.name || "صاحب الحساب",
+      email: user.email,
+      isAdmin,
     });
   } catch (e) {
     console.error("[verify-code] fatal error:", e);
-    // نضمن دومًا JSON
     return res.status(500).json({ message: "حدث خطأ داخلي غير متوقع" });
   }
 }

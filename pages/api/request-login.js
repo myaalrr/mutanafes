@@ -1,17 +1,20 @@
+// pages/api/reguest-login.js
 import { supabase } from "../../lib/supabase";
 import nodemailer from "nodemailer";
+import { normalizeEmail, isValidEmail } from "../../lib/email";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).send("Method not allowed");
 
-  const { email } = req.body;
-  if (!email) return res.status(400).json({ message: "أدخل البريد الإلكتروني" });
+  let { email } = req.body || {};
+  email = normalizeEmail(email);
+  if (!isValidEmail(email)) {
+    return res.status(400).json({ message: "أدخل بريد إلكتروني صحيح" });
+  }
 
   try {
-    // توليد رمز مؤقت 6 أرقام
-    const tempCode = Math.floor(100000 + Math.random() * 900000);
+    const tempCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // إنشاء ترانسبورتر لإرسال الإيميل
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -20,15 +23,13 @@ export default async function handler(req, res) {
       },
     });
 
-    // إرسال الإيميل
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: `متنافس <${process.env.EMAIL_USER}>`,
       to: email,
       subject: "رمز تسجيل الدخول",
       text: `رمزك لتسجيل الدخول هو: ${tempCode}`,
     });
 
-    // حفظ الرمز في Supabase (إذا مستخدم جديد)
     const { error } = await supabase
       .from("users")
       .upsert({ email, temp_code: tempCode }, { onConflict: ["email"] });

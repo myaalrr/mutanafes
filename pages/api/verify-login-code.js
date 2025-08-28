@@ -1,6 +1,7 @@
 // pages/api/verify-login-code.js
 import { supabase } from "../../lib/supabase";
 import { isValidEmail, normalizeEmail } from "../../lib/email";
+import { isAdminEmail } from "../../lib/admins";
 
 export default async function handler(req, res) {
   if (req.method !== "POST")
@@ -28,7 +29,6 @@ export default async function handler(req, res) {
       console.error("Supabase select error:", selErr);
       return res.status(500).json({ message: "خطأ في التحقق من البيانات" });
     }
-
     if (!user) {
       return res.status(400).json({ message: "الرمز غير صحيح" });
     }
@@ -37,14 +37,17 @@ export default async function handler(req, res) {
       .from("users")
       .update({ temp_code: null })
       .eq("id", user.id);
+    if (clearErr) console.warn("Warning: failed to clear temp_code:", clearErr);
 
-    if (clearErr) {
-      console.warn("Warning: failed to clear temp_code:", clearErr);
-    }
+    const isAdmin = isAdminEmail(user.email);
+    // Debug خفيف لو احتجناه في اللوق
+    console.log("[verify-login-code] user:", user.email, "isAdmin:", isAdmin);
 
     return res.status(200).json({
       message: "تم تسجيل الدخول",
       name: user.name || "صاحب الحساب",
+      email: user.email,
+      isAdmin,
     });
   } catch (e) {
     console.error("verify-login-code fatal error:", e);

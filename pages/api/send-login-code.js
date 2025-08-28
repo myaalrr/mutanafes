@@ -27,13 +27,11 @@ export default async function handler(req, res) {
   try {
     let { email } = req.body || {};
     email = normalizeEmail(email);
-    console.log("[send-login-code] body:", req.body);
 
     if (!isValidEmail(email)) {
       return res.status(400).json({ message: "صيغة البريد الإلكتروني غير صحيحة" });
     }
 
-    // تأكد أن المستخدم موجود
     const { data: user, error: fetchErr } = await supabase
       .from("users")
       .select("id,email,name")
@@ -44,13 +42,10 @@ export default async function handler(req, res) {
       console.error("[send-login-code] select error:", fetchErr);
       return res.status(500).json({ message: "خطأ في التحقق من المستخدم" });
     }
-
     if (!user) {
-      // هذا اللي نبغاه يظهر في الواجهة بدل "الرمز مطلوب"
       return res.status(404).json({ notFound: true, message: "الحساب غير موجود." });
     }
 
-    // أنشئ رمز جديد وخزّنه
     const tempCode = Math.floor(100000 + Math.random() * 900000).toString();
 
     const { error: updErr } = await supabase
@@ -63,7 +58,6 @@ export default async function handler(req, res) {
       return res.status(500).json({ message: "خطأ في حفظ الرمز" });
     }
 
-    // أرسل الإيميل
     try {
       await sendEmailSafe({
         from: `متنافس <${process.env.EMAIL_USER}>`,
