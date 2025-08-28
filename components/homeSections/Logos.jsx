@@ -1,6 +1,8 @@
 /*my-website > components > homeSection > Logos.jsx */
 import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
+import { supabase } from '../../lib/supabase';
+
 
 export default function FullWidthLogos() {
   const logos = [

@@ -1,11 +1,7 @@
 /*my-website > components > homeSection > Services.jsx */
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function Services() {
-  const [showBar, setShowBar] = useState(false);
-  const [selectedServices, setSelectedServices] = useState([]);
-
   const services = [
     { label: "تصوير احترافي", description: "جلسات تصوير لتحسين الصور الشخصية على المنصات الإجتماعية", image: "/icons/كاميرا.gif" },
     { label: "تحسين حسابات LinkedIn", description: "إنشاء حسابات مهنية جذابة ومراجعة الحسابات الشخصية", image: "/icons/لينكدإن.gif" },
@@ -14,14 +10,6 @@ export default function Services() {
     { label: "التدريب على المقابلات الوظيفية", description: "مقابلات تجريبية وتقييم الأداء لتطوير الثقة", image: "/icons/عمل.gif" },
     { label: "فرص التدريب التعاوني", description: "توفير فرص تدريب", image: "/icons/تدريب.gif" },
   ];
-
-  const toggleService = (label) => {
-    if (selectedServices.includes(label)) {
-      setSelectedServices(selectedServices.filter(item => item !== label));
-    } else {
-      setSelectedServices([...selectedServices, label]);
-    }
-  };
 
   return (
     <section id="services" className="services-section">
@@ -54,45 +42,6 @@ export default function Services() {
             <p className="service-description">{description}</p>
           </div>
         ))}
-      </div>
-
-      <div className="order-wrapper">
-        <button
-          className="order-button"
-          onClick={() => setShowBar(!showBar)}
-        >
-          اطلب خدمة
-        </button>
-
-        <AnimatePresence>
-          {showBar && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.4 }}
-              className="order-bar"
-            >
-              {services.map(({ label }, i) => (
-                <div
-                  key={i}
-                  className={`order-bar-item ${selectedServices.includes(label) ? 'selected' : ''}`}
-                  onClick={() => toggleService(label)}
-                >
-                  {label}
-                </div>
-              ))}
-
-              <button
-                className="order-button"
-                onClick={() => alert(`تم تأكيد الخدمات: ${selectedServices.join(", ")}`)}
-                disabled={selectedServices.length === 0}
-              >
-                تأكيد
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
 
       <style jsx>{`
@@ -166,67 +115,6 @@ export default function Services() {
           line-height: 1.5;
           max-width: 80%;
           margin-inline: auto;
-        }
-
-        .order-wrapper {
-          margin-top: 4vh;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .order-button {
-          padding: 1vh 3vw;
-          font-size: clamp(12px, 2vw, 16px);
-          color: #163853;
-          background-color: #F5F5F5;
-          border: none;
-          border-radius: 30px;
-          cursor: pointer;
-          font-family: 'IBMPlexArabic-Bold', sans-serif;
-          transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        .order-button:hover {
-          background-color: #e0e0e0;
-          transform: translateY(-2px);
-        }
-
-        .order-button:disabled {
-          background-color: #ddd;
-          color: #888;
-          cursor: not-allowed;
-          transform: none;
-        }
-
-        .order-bar {
-          margin-top: 1vh;
-          background-color: #fff;
-          border-radius: 20px;
-          padding: 1vh 0;
-          width: fit-content;
-          min-width: 60%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        }
-
-        .order-bar-item {
-          font-size: clamp(12px, 2vw, 16px);
-          color: #666666;
-          font-family: 'IBMPlexArabic', sans-serif;
-          margin: 0.5vh 0;
-          padding: 0.5vh 1vw;
-          border-radius: 10px;
-          user-select: none;
-          transition: color 0.3s ease, font-weight 0.3s ease;
-          cursor: pointer;
-        }
-
-        .order-bar-item.selected {
-          color: #C49E7D;
-          font-weight: 700;
         }
       `}</style>
     </section>

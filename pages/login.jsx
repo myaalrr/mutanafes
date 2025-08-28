@@ -1,116 +1,182 @@
-/*my-website > pages > login.jsx */
-"use client";
+// pages/login.js
 import { useState } from "react";
-import { auth, db, RecaptchaVerifier } from "../firebase";
-import { signInWithPhoneNumber } from "firebase/auth";
-import { ref, get } from "firebase/database";
-import { useRouter } from "next/navigation";
+import { isValidEmail, normalizeEmail } from "../lib/email";
 
-export default function Login() {
-  const router = useRouter();
-  const [phone, setPhone] = useState("");
-  const [otp, setOtp] = useState("");
-  const [confirmation, setConfirmation] = useState(null);
-  const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState("info");
-  const [accountNotFound, setAccountNotFound] = useState(false);
+// قراءة قائمة الأدمن من env (تُحقن وقت البناء)
+const ADMIN_LIST = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || "")
+  .split(",")
+  .map((s) => s.trim().toLowerCase())
+  .filter(Boolean);
 
-  const sendOtp = async () => {
-    try {
-      if (!phone.match(/^05\d{8}$/)) {
-        setMessageType("error");
-        setMessage("يرجى إدخال رقم هاتف صحيح ❌");
-        return;
-      }
-
-      const formattedPhone = "+966" + phone.slice(1);
-
-      const snapshot = await get(ref(db, `users/${formattedPhone}/name`));
-      if (!snapshot.exists()) {
-        setAccountNotFound(true);
-        setMessage("");
-        return;
-      }
-
-  if (!window.recaptchaVerifier) {
-  window.recaptchaVerifier = new RecaptchaVerifier(
-    "recaptcha-container",
-    {
-      size: "invisible",
-      callback: (response) => {
-        console.log("reCAPTCHA verified:", response);
-      }
-    },
-    auth
-  );
+function isAdmin(email) {
+  const e = (email || "").trim().toLowerCase();
+  return ADMIN_LIST.includes(e);
 }
 
+export default function Login() {
+  const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
+  const [step, setStep] = useState(1);
+  const [msg, setMsg] = useState("");
+  const [loading, setLoading] = useState(false);
 
-      const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, window.recaptchaVerifier);
-      setConfirmation(confirmationResult);
-      setMessageType("success");
-      setMessage("تم إرسال رمز التحقق ✅");
-      setAccountNotFound(false);
+  const parseJsonSafe = async (res) => {
+    const text = await res.text();
+    try { return JSON.parse(text); } catch { return { message: text || "خطأ غير متوقع من الخادم" }; }
+  };
+
+  const sendCode = async () => {
+    const clean = normalizeEmail(email).toLowerCase();
+    if (!isValidEmail(clean)) {
+      setMsg("صيغة البريد الإلكتروني غير صحيحة ");
+      return;
+    }
+
+    setLoading(true);
+    setMsg("");
+
+    try {
+      const res = await fetch("/api/send-login-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: clean }),
+      });
+      const data = await parseJsonSafe(res);
+
+      if (data?.notFound) {
+        setMsg("الحساب غير موجود");
+        return;
+      }
+
+      if (!res.ok) throw new Error(data.message || "حدث خطأ أثناء إرسال الرمز");
+
+      setStep(2);
     } catch (err) {
-      console.error(err);
-      setMessageType("error");
-      setMessage("خطأ في إرسال الرمز ❌");
+      setMsg(err.message || "حدث خطأ أثناء إرسال الرمز");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const verifyOtp = async () => {
+  const handleLogin = async () => {
+    const clean = normalizeEmail(email).toLowerCase();
+    if (!isValidEmail(clean)) {
+      setMsg("صيغة البريد الإلكتروني غير صحيحة.");
+      return;
+    }
+
+    setLoading(true);
+    setMsg("");
+
     try {
-      const result = await confirmation.confirm(otp);
-      const user = result.user;
+      const res = await fetch("/api/verify-login-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: clean, code }),
+      });
+      const data = await parseJsonSafe(res);
+      if (!res.ok) throw new Error(data.message || "الرمز غير صحيح");
 
-      const snapshot = await get(ref(db, `users/${user.phoneNumber}/name`));
-      const userName = snapshot.exists() ? snapshot.val() : "مستخدم";
+      // تخزين جلسة المستخدم
+      localStorage.setItem("logged_in", "1");
+      localStorage.setItem("user_name", data.name || "");
+      localStorage.setItem("user_email", clean);
 
-      setMessageType("success");
-      setMessage(`مرحباً ${userName}, تم تسجيل الدخول بنجاح ✅`);
-
-      setTimeout(() => router.push("/"), 1500);
+      // توجيه حسب نوع المستخدم
+      const dest = isAdmin(clean) ? "/admin/review" : "/";
+      setMsg(`أهلاً بك يا ${data.name || clean}، سيتم تحويلك الآن...`);
+      setTimeout(() => (window.location.href = dest), 800);
     } catch (err) {
-      console.error(err);
-      setMessageType("error");
-      setMessage("رمز التحقق غير صحيح ❌");
+      setMsg(err.message || "حدث خطأ أثناء التحقق من الرمز");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={containerStyle}>
-      <h2 style={titleStyle}>تسجيل الدخول</h2>
+    <div style={styles.container}>
+      <h2 style={styles.title}>تسجيل الدخول</h2>
 
-      <input type="tel" placeholder="05XXXXXXXX" value={phone} onChange={(e) => setPhone(e.target.value)} style={inputStyle} />
-
-      {!confirmation ? (
-        <button style={buttonStyle} onClick={sendOtp}>إرسال الرمز</button>
-      ) : (
+      {step === 1 && (
         <>
-          <input type="text" placeholder="أدخل الرمز" value={otp} onChange={(e) => setOtp(e.target.value)} style={inputStyle} />
-          <button style={buttonStyle} onClick={verifyOtp}>تأكيد الرمز</button>
+          <input
+            style={styles.input}
+            type="email"
+            placeholder="أدخل البريد الإلكتروني"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <button style={styles.button} onClick={sendCode} disabled={loading}>
+            {loading ? "جارٍ الإرسال..." : "إرسال الرمز"}
+          </button>
+          <p style={{ marginTop: "10px", color: "#555", fontSize: "14px" }}>
+            ليس لديك حساب بعد؟{" "}
+            <a href="/signup" style={{ color: "#555", fontWeight: 700, textDecoration: "underline" }}>
+              أنشئ حسابك من هنا
+            </a>
+          </p>
         </>
       )}
 
-      {message && <p style={{ ...messageStyle, color: messageType === "success" ? "#637e64ff" : "#C49E7D" }}>{message}</p>}
-
-      {accountNotFound && (
-        <div style={noticeStyle}>
-          الحساب غير موجود،{" "}
-          <button style={linkStyle} onClick={() => router.push("/signup")}>أنشئ حسابك من هنا</button>
-        </div>
+      {step === 2 && (
+        <>
+          <input
+            style={styles.input}
+            type="text"
+            placeholder="أدخل الرمز المرسل"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+          />
+          <button style={styles.button} onClick={handleLogin} disabled={loading}>
+            {loading ? "جارٍ التحقق..." : "تأكيد الرمز"}
+          </button>
+        </>
       )}
 
-      <div id="recaptcha-container"></div>
+      {msg && <div style={styles.msg}>{msg}</div>}
     </div>
   );
 }
 
-// 🎨 تنسيقات
-const containerStyle = { maxWidth: 400, margin: "50px auto", padding: 20, fontFamily: "IBMPlexArabic" };
-const titleStyle = { textAlign: "center", marginBottom: 20 };
-const inputStyle = { padding: "12px", marginBottom: "12px", borderRadius: "8px", border: "1px solid #f5f5f5", fontSize: "16px", width: "100%", boxSizing: "border-box" };
-const buttonStyle = { backgroundColor: "#C49E7D", color: "white", border: "none", borderRadius: "8px", padding: "12px", fontSize: "16px", cursor: "pointer", width: "100%" };
-const messageStyle = { fontSize: "14px", marginTop: "10px" };
-const noticeStyle = { marginTop: "15px", padding: "10px", backgroundColor: "#f5f5f5", borderRadius: "8px", textAlign: "center", fontSize: "14px" };
-const linkStyle = { background: "none", border: "none", color: "#C49E7D", cursor: "pointer", textDecoration: "underline", padding: 0, fontSize: "14px" };
+const styles = {
+  container: {
+    fontFamily: "IBMPlexArabic, sans-serif",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: "100vh",
+    backgroundColor: "#fff",
+  },
+  title: {
+    color: "#163853",
+    fontSize: "28px",
+    marginBottom: "20px",
+  },
+  input: {
+    width: "300px",
+    padding: "12px",
+    marginBottom: "10px",
+    borderRadius: "8px",
+    border: "1px solid " + "#ccc",
+    fontSize: "16px",
+    color: "#4e4e4e",
+    boxSizing: "border-box",
+  },
+  button: {
+    width: "300px",
+    padding: "12px",
+    borderRadius: "8px",
+    border: "none",
+    backgroundColor: "#C49E7D",
+    color: "#fff",
+    fontSize: "16px",
+    cursor: "pointer",
+  },
+  msg: {
+    marginTop: "15px",
+    color: "#555",
+    textAlign: "center",
+    fontSize: "14px",
+  },
+};
