@@ -2,17 +2,6 @@
 import { useState } from "react";
 import { isValidEmail, normalizeEmail } from "../lib/email";
 
-// قراءة قائمة الأدمن من env (تُحقن وقت البناء)
-const ADMIN_LIST = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || "")
-  .split(",")
-  .map((s) => s.trim().toLowerCase())
-  .filter(Boolean);
-
-function isAdmin(email) {
-  const e = (email || "").trim().toLowerCase();
-  return ADMIN_LIST.includes(e);
-}
-
 export default function Login() {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
@@ -26,7 +15,7 @@ export default function Login() {
   };
 
   const sendCode = async () => {
-    const clean = normalizeEmail(email).toLowerCase();
+    const clean = normalizeEmail(email);
     if (!isValidEmail(clean)) {
       setMsg("صيغة البريد الإلكتروني غير صحيحة ");
       return;
@@ -42,11 +31,11 @@ export default function Login() {
         body: JSON.stringify({ email: clean }),
       });
       const data = await parseJsonSafe(res);
+if (data?.notFound) {
+  setMsg("الحساب غير موجود");
+  return;
+}
 
-      if (data?.notFound) {
-        setMsg("الحساب غير موجود");
-        return;
-      }
 
       if (!res.ok) throw new Error(data.message || "حدث خطأ أثناء إرسال الرمز");
 
@@ -59,7 +48,7 @@ export default function Login() {
   };
 
   const handleLogin = async () => {
-    const clean = normalizeEmail(email).toLowerCase();
+    const clean = normalizeEmail(email);
     if (!isValidEmail(clean)) {
       setMsg("صيغة البريد الإلكتروني غير صحيحة.");
       return;
@@ -77,15 +66,12 @@ export default function Login() {
       const data = await parseJsonSafe(res);
       if (!res.ok) throw new Error(data.message || "الرمز غير صحيح");
 
-      // تخزين جلسة المستخدم
       localStorage.setItem("logged_in", "1");
       localStorage.setItem("user_name", data.name || "");
       localStorage.setItem("user_email", clean);
 
-      // توجيه حسب نوع المستخدم
-      const dest = isAdmin(clean) ? "/admin/review" : "/";
-      setMsg(`أهلاً بك يا ${data.name || clean}، سيتم تحويلك الآن...`);
-      setTimeout(() => (window.location.href = dest), 800);
+      setMsg(`أهلاً بك يا ${data.name}، سيتم تحويلك للصفحة الرئيسية...`);
+      setTimeout(() => (window.location.href = "/"), 1500);
     } catch (err) {
       setMsg(err.message || "حدث خطأ أثناء التحقق من الرمز");
     } finally {
@@ -99,16 +85,11 @@ export default function Login() {
 
       {step === 1 && (
         <>
-          <input
-            style={styles.input}
-            type="email"
-            placeholder="أدخل البريد الإلكتروني"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <input style={styles.input} type="email" placeholder="أدخل البريد الإلكتروني" value={email} onChange={(e) => setEmail(e.target.value)} />
           <button style={styles.button} onClick={sendCode} disabled={loading}>
             {loading ? "جارٍ الإرسال..." : "إرسال الرمز"}
           </button>
+          {/* إشعار بالفصحى */}
           <p style={{ marginTop: "10px", color: "#555", fontSize: "14px" }}>
             ليس لديك حساب بعد؟{" "}
             <a href="/signup" style={{ color: "#555", fontWeight: 700, textDecoration: "underline" }}>
@@ -120,13 +101,7 @@ export default function Login() {
 
       {step === 2 && (
         <>
-          <input
-            style={styles.input}
-            type="text"
-            placeholder="أدخل الرمز المرسل"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-          />
+          <input style={styles.input} type="text" placeholder="أدخل الرمز المرسل" value={code} onChange={(e) => setCode(e.target.value)} />
           <button style={styles.button} onClick={handleLogin} disabled={loading}>
             {loading ? "جارٍ التحقق..." : "تأكيد الرمز"}
           </button>
@@ -158,7 +133,7 @@ const styles = {
     padding: "12px",
     marginBottom: "10px",
     borderRadius: "8px",
-    border: "1px solid " + "#ccc",
+    border: "1px solid #ccc",
     fontSize: "16px",
     color: "#4e4e4e",
     boxSizing: "border-box",
@@ -177,6 +152,7 @@ const styles = {
     marginTop: "15px",
     color: "#555",
     textAlign: "center",
-    fontSize: "14px",
+    fontSize: "14px", // 👈 أضفنا حجم الخط هنا
   },
 };
+
