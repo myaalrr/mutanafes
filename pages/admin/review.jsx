@@ -226,4 +226,3 @@ const styles = {
   qTitle: { fontWeight:600, color:"#163853" },
   aText: { color:"#333", whiteSpace:"pre-wrap" },
 };
-
