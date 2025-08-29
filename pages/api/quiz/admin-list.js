@@ -5,7 +5,6 @@ import { isAdminEmail } from "../../../lib/admins";
 
 export const config = { runtime: "nodejs" };
 
-// التحقق: هل الإيميل من ضمن قائمة الأدمن (يوحّد المنطق مع lib/admins)
 function isAuthorized(req) {
   const email = normalizeEmail(req.headers["x-user-email"] || "");
   if (!email) return false;
@@ -14,18 +13,20 @@ function isAuthorized(req) {
 
 export default async function handler(req, res) {
   res.setHeader("Content-Type", "application/json; charset=utf-8");
-
-  // السماح فقط للمشرفين
-  if (!isAuthorized(req)) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
-
-  if (req.method !== "GET") {
-    return res.status(405).json({ message: "Method not allowed" });
-  }
+  if (!isAuthorized(req)) return res.status(401).json({ message: "Unauthorized" });
+  if (req.method !== "GET") return res.status(405).json({ message: "Method not allowed" });
 
   try {
     const { status = "قيد المراجعة", limit = "100" } = req.query;
+
+    const rawStatus = String(status || "").trim();
+    const lower = rawStatus.toLowerCase();
+    const noFilter =
+      rawStatus === "" ||
+      rawStatus === "الكل" ||
+      lower === "all" ||
+      lower === "any" ||
+      rawStatus === "*";
 
     let query = supabaseAdmin
       .from("quiz_submissions")
@@ -35,25 +36,19 @@ export default async function handler(req, res) {
       .order("created_at", { ascending: false })
       .limit(parseInt(limit, 10));
 
-    if (status && status !== "all") {
-      query = query.eq("status", status);
+    if (!noFilter) {
+      query = query.eq("status", rawStatus);
     }
 
     const { data, error } = await query;
-
     if (error) {
       console.error("admin-list error:", error);
-      return res
-        .status(500)
-        .json({ message: "Supabase select failed", details: error.message });
+      return res.status(500).json({ message: "Supabase select failed", details: error.message });
     }
 
     return res.status(200).json({ ok: true, items: data || [] });
   } catch (e) {
     console.error("admin-list route error:", e);
-    return res
-      .status(500)
-      .json({ message: "خطأ داخلي في الخادم", details: String(e.message || e) });
+    return res.status(500).json({ message: "خطأ داخلي في الخادم", details: String(e.message || e) });
   }
 }
-
